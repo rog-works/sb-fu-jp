@@ -1,0 +1,9 @@
+version: '3'
+services:
+  app:
+    build: ./docker/app
+    image: sb-fu-jp-app:latest
+    volumes:
+      - ./:/opt/app
+    ports:
+      - 22223:22222

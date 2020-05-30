@@ -1,0 +1,19 @@
+{
+	"editor.autoClosingBrackets": "never",
+	"editor.autoClosingQuotes": "never",
+	"python.pythonPath": "/usr/local/bin/python",
+	"python.linting.pylintEnabled": false,
+	"python.linting.flake8Enabled": true,
+	"python.linting.enabled": true,
+	"files.watcherExclude": {
+		"**/fu_assets/**": true,
+		"**/fu_assets_dest/**": true
+	},
+	"files.associations": {
+		"*.questtemplate": "json",
+		"*.activeitem": "json",
+		"*.legs": "json",
+		"*.chest": "json",
+		"*.gs": "javascript"
+	}
+}

@@ -1,0 +1,4 @@
+/docker/app/.ssh/authorized_keys
+/fu_assets/
+/dest/
+.env
