@@ -1,7 +1,7 @@
 function doGet(e) {
   const params = e.parameter;
   const texts = {}
-  for (const key in Object.keys(params)) {
+  for (const key of Object.keys(params)) {
     const trans = LanguageApp.translate(params[key], 'en', 'ja');
     if (trans) {
       texts[key] = trans;
