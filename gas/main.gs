@@ -6,6 +6,7 @@ function doGet(e) {
     if (trans) {
       texts[key] = trans;
     }
+    Utilities.sleep(100);
   }
   const body = { code: 200, results: texts }
   const res = ContentService.createTextOutput();
