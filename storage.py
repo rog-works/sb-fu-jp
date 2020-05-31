@@ -1,3 +1,4 @@
+import re
 import json
 from jsoncomment import JsonComment
 
@@ -9,7 +10,8 @@ class Storage:
     def load(self, filepath: str) -> dict:
         try:
             with open(filepath) as f:
-                return self._loader.load(f)
+                content = re.sub('//.*\n', '', f.read())
+                return self._loader.loads(content)
         except Exception as e:
             raise Exception(f'file = {filepath} error = [{type(e)}] {e}')
 

@@ -5,15 +5,12 @@ from args import Args
 from storage import Storage
 from translator import Translator
 from worker import Worker
-from logging import getLogger
-
-
-logger = getLogger(__name__)
+from logger import logger
 
 
 class App:
     GAS_URL = os.environ['GAS_URL']
-    TOHGHER_LIMIT_SIZE = 50000
+    TOHGHER_LIMIT_SIZE = 5000
 
     @classmethod
     def run(cls, args: Args):

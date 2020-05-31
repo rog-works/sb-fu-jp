@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import List, Dict
 from urllib import parse
 import requests
+from logger import logger
 
 
 class Promise:
@@ -41,16 +42,16 @@ class Translator:
             res = self.trans_to_jp(promises)
             for promise in promises:
                 if promise.key in res.results:
-                    promise.result = res.results[promise.key] 
+                    promise.result = res.results[promise.key]
 
             start = end
 
     def collect_promises(self, start: int) -> int:
-        totel_text_size = 0
+        total_text_size = 0
         for index, promise in enumerate(self._promises[start:]):
             text_size = len(parse.quote(promise.text))
-            if totel_text_size + text_size < self._together_limit_size:
-                totel_text_size + text_size
+            if total_text_size + text_size < self._together_limit_size:
+                total_text_size = total_text_size + text_size
             else:
                 return start + index
 

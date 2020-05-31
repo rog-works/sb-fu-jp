@@ -7,8 +7,9 @@ class TestApp(TestCase):
     RES = {
         'code': 200,
         'results': {
-            't0': 'おはよう',
-            't1': 'おやすみ',
+            't0': 'あ',
+            't1': 'い',
+            't2': 'う',
         },
     }
     ARGV = [
@@ -18,6 +19,7 @@ class TestApp(TestCase):
         '--files', ','.join([
             'fu_assets/items/active/crewcontracts/crewcontract_arctic.activeitem',
             'fu_assets/items/active/fishingrod/profishingrod.activeitem',
+            'fu_assets/items/armors/slimenobleblack/slimenobleblack.chest',
         ]),
     ]
 
