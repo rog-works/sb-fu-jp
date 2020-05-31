@@ -13,18 +13,7 @@
 			"args": [
 				"--dest", "dest/",
 				"--keys", "description",
-				"--files", "fu_assets/items/active/fishingrod/profishingrod.activeitem"
-			],
-			"envFile": "${workspaceFolder}/.env"
-		},
-		{
-			"name": "Python: Test File",
-			"type": "python",
-			"request": "launch",
-			"program": "${workspaceFolder}/tests/test_app.py",
-			"console": "integratedTerminal",
-			"args": [
-				"-m", "unittest", "${workspaceFolder}/tests/test_app.py",
+				"--files", "fu_assets/items/armors/slimenobleblack/slimenobleblack.chest"
 			],
 			"envFile": "${workspaceFolder}/.env"
 		}

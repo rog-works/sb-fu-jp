@@ -13,6 +13,8 @@
 		"*.activeitem": "json",
 		"*.legs": "json",
 		"*.chest": "json",
+		"*.augment": "json",
+		"*.*item": "json",
 		"*.gs": "javascript"
 	},
 	"[python]": {
