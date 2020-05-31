@@ -7,7 +7,7 @@ function doGet(e) {
       texts[key] = trans;
     }
   }
-  const body = { code: 200, texts: texts }
+  const body = { code: 200, results: texts }
   const res = ContentService.createTextOutput();
   res.setMimeType(ContentService.MimeType.JSON);
   res.setContent(JSON.stringify(body));

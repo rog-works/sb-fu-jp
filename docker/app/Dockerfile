@@ -31,6 +31,8 @@ RUN apt-get install -y curl git
 USER worker
 ENV USER=worker
 
+RUN echo 'export PYTHONDONTWRITEBYTECODE=1' >> /home/worker/.bashrc
+
 WORKDIR /opt/app
 
 CMD /home/worker/entrypoint.sh
