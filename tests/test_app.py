@@ -25,7 +25,7 @@ class TestApp(TestCase):
 
     def test_run(self):
         with mock.patch('os.environ', return_value=self.ENV):
-            with mock.patch('translator.Translator.fetch', return_value=self.RES):
+            with mock.patch('translator.Translator._fetch', return_value=self.RES):
                 with mock.patch('storage.Storage.save') as save_mock:
                     from app import App
 

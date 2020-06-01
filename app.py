@@ -1,10 +1,10 @@
 import os
 import sys
-from typing import Dict
+from typing import List
 from args import Args
 from storage import Storage
 from translator import Translator
-from worker import Worker
+from mod import Mod
 from logger import logger
 
 
@@ -20,23 +20,19 @@ class App:
         try:
             translator = Translator(cls.GAS_URL, cls.TOHGHER_LIMIT_SIZE)
             storage = Storage()
-            workers: Dict[str, Worker] = {}
+            mods: List[Mod] = []
             for filepath in args.files:
                 data = storage.load(filepath)
-                worker = Worker(data)
-                for json_path in args.keys:
-                    pre_text, controls = worker.prepare(json_path)
-                    worker.context(json_path, controls, translator.future(pre_text))
-
-                workers[filepath] = worker
+                mod = Mod(filepath, data)
+                mods.append(mod)
+                for worker in mod.works(args.keys):
+                    translator.promise(worker.prepare(), worker.post)
 
             translator.perform()
 
-            number = 1
-            for filepath, worker in workers.items():
-                logger.info(f'{number}/{len(args.files)} {filepath}')
-                storage.save(f'{args.dest}/{filepath}', worker.get_result())
-                number = number + 1
+            for mod in mods:
+                if mod.has_translate:
+                    storage.save(f'{args.dest}/{mod.filepath}', mod.translated())
         except Exception as e:
             logger.error(e)
             raise

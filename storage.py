@@ -21,3 +21,4 @@ class Storage:
                 f.write(json.dumps(data, indent=2))
         except Exception as e:
             raise Exception(f'file = {filepath} error = [{type(e)}] {e}')
+
