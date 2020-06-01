@@ -12,31 +12,42 @@ class App:
     GAS_URL = os.environ['GAS_URL']
     TOHGHER_LIMIT_SIZE = 5000
 
-    @classmethod
-    def run(cls, args: Args):
-        if len(args.files) == 0:
+    def __init__(self, args: Args) -> None:
+        self._translator = Translator(self.GAS_URL, self.TOHGHER_LIMIT_SIZE)
+        self._storage = Storage()
+        self._args = args
+
+    def run(self):
+        if len(self._args.files) == 0:
             return
 
-        try:
-            translator = Translator(cls.GAS_URL, cls.TOHGHER_LIMIT_SIZE)
-            storage = Storage()
-            mods: List[Mod] = []
-            for filepath in args.files:
-                data = storage.load(filepath)
-                mod = Mod(filepath, data)
-                mods.append(mod)
-                for worker in mod.works(args.keys):
-                    translator.promise(worker.prepare(), worker.post)
+        mods: List[Mod] = []
+        for filepath in self._args.files:
+            try:
+                mods.append(self._run_prepare(filepath))
+            except Exception as e:
+                logger.error(f'Prepare procesing error! file = {filepath} error = {e}')
 
-            translator.perform()
+        self._translator.perform()
 
-            for mod in mods:
-                if mod.has_translate:
-                    storage.save(f'{args.dest}/{mod.filepath}', mod.translated())
-        except Exception as e:
-            logger.error(e)
-            raise
+        for mod in mods:
+            try:
+                self._run_post(mod)
+            except Exception as e:
+                logger.error(f'Post procesing error! file = {mod.filepath} error = {e}')
+
+    def _run_prepare(self, filepath: str) -> Mod:
+        data = self._storage.load(filepath)
+        mod = Mod(filepath, data)
+        for worker in mod.works(self._args.keys):
+            self._translator.promise(worker.prepare(), worker.post)
+
+        return mod
+
+    def _run_post(self, mod: Mod):
+        if mod.has_translate:
+            self._storage.save(f'{self._args.dest}/{mod.filepath}', mod.translated())
 
 
 if __name__ == '__main__':
-    App.run(Args(sys.argv))
+    App(Args(sys.argv)).run()

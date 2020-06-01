@@ -16,6 +16,10 @@ class Worker:
         self._controls = controls
         self._post_text = ''
 
+    @property
+    def finished(self) -> bool:
+        return len(self._post_text) > 0
+
     def prepare(self) -> str:
         pre_text = self._org_text
         for index, control in enumerate(self._controls):
@@ -46,7 +50,7 @@ class Mod:
 
     @property
     def has_translate(self) -> bool:
-        return len(self._workers) > 0
+        return len([worker for worker in self._workers.values() if worker.finished]) > 0
 
     def works(self, json_paths: List[str]) -> List[Worker]:
         for json_path in json_paths:

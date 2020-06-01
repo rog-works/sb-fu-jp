@@ -30,7 +30,7 @@ class TestApp(TestCase):
                     from app import App
 
                     args = Args(self.ARGV)
-                    App.run(args)
+                    App(args).run()
 
                     for index, src_filepath in enumerate(args.files):
                         call = save_mock.call_args_list[index][0]
