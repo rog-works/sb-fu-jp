@@ -1,4 +1,3 @@
-import os
 import sys
 from typing import List
 from args import Args
@@ -6,10 +5,11 @@ from storage import Storage
 from translator import Translator
 from mod import Mod
 from logger import logger
+from config import config
 
 
 class App:
-    GAS_URL = os.environ['GAS_URL']
+    GAS_URL = config['GAS_URL']
     TOHGHER_LIMIT_SIZE = 5000
 
     def __init__(self, args: Args) -> None:

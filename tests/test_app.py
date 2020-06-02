@@ -3,7 +3,7 @@ from args import Args
 
 
 class TestApp(TestCase):
-    ENV = {'GAS_URL': 'hoge'}
+    CONFIG = {'GAS_URL': 'https://example.com/path'}
     RES = {
         'code': 200,
         'results': {
@@ -24,7 +24,7 @@ class TestApp(TestCase):
     ]
 
     def test_run(self):
-        with mock.patch('os.environ', return_value=self.ENV):
+        with mock.patch('config.config', return_value=self.CONFIG):
             with mock.patch('translator.Translator._fetch', return_value=self.RES):
                 with mock.patch('storage.Storage.save') as save_mock:
                     from app import App

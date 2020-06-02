@@ -14,8 +14,7 @@
 				"--dest", "dest/",
 				"--keys", "description",
 				"--files", "fu_assets/items/armors/slimenobleblack/slimenobleblack.chest"
-			],
-			"envFile": "${workspaceFolder}/.env"
+			]
 		}
 	]
 }

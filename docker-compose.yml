@@ -7,4 +7,3 @@ services:
       - ./:/opt/app
     ports:
       - 22223:22222
-    env_file: .env
