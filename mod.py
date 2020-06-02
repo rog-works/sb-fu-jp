@@ -30,7 +30,7 @@ class Worker:
         pre_text = self._org_text
         for index, control in enumerate(self._controls):
             pattern = re.compile('\\^' + control.code + ';([^^]+)\\^reset;')
-            replace = '${' + control.code + str(index) + '}' + control.org_words + '${reset}'
+            replace = '${' + str(index).zfill(4) + '}' + control.org_words + '${/}'
             pre_text = re.sub(pattern, replace, pre_text)
 
         return pre_text
@@ -38,7 +38,7 @@ class Worker:
     def post(self, trans_text: str):
         post_text = trans_text
         for index, control in enumerate(self._controls):
-            pattern = re.compile('\\$\\s*{' + control.code + str(index) + '}\\s*([^$]+)\\s*\\$\\s*{reset}')
+            pattern = re.compile('\\$\\s*\\{' + str(index).zfill(4) + '\\}\\s*([^$]+)\\s*\\$\\s*\\{/\\}')
             replace = f'^{control.code};\\1 (org: {control.org_words})^reset;'
             post_text = re.sub(pattern, replace, post_text)
 
