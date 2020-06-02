@@ -1,9 +1,9 @@
-StartBound Frackin' Universe日本語化ツール
+Star Bound Frackin' Universe日本語化ツール
 ===
 
 # 内容
 
-* このリポジトリは`StarBound`の大型拡張MOD`Frackin' Universe`(以降`FU`)の日本語化ツールです
+* このリポジトリは`Star Bound`の大型拡張MOD`Frackin' Universe`(以降`FU`)の日本語化ツールです
 * `FU`を直接翻訳するツールであり、MODは作成しません
 * 翻訳に`Google App Sctipt`(以降`GAS`)を利用します
 
