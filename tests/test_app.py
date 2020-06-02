@@ -10,6 +10,7 @@ class TestApp(TestCase):
             't0': 'あ',
             't1': 'い',
             't2': 'う',
+            't3': 'え',
         },
     }
     ARGV = [
@@ -20,6 +21,7 @@ class TestApp(TestCase):
             'fu_assets/items/active/crewcontracts/crewcontract_arctic.activeitem',
             'fu_assets/items/active/fishingrod/profishingrod.activeitem',
             'fu_assets/items/armors/slimenobleblack/slimenobleblack.chest',
+            'fu_assets/items/active/shields/durasteelshield.activeitem',
         ]),
     ]
 
