@@ -13,7 +13,18 @@
 			"args": [
 				"--dest", "dest/",
 				"--keys", "description",
-				"--files", "fu_assets/items/armors/slimenobleblack/slimenobleblack.chest"
+				"--files", "fu_assets/quests/tech/other/emergencybounce.questtemplate"
+			]
+		},
+		{
+			"name": "Python: Test File",
+			"type": "python",
+			"request": "launch",
+			"module": "unittest",
+			"console": "integratedTerminal",
+			"cwd": "${workspaceFolder}",
+			"args": [
+				"tests/test_app.py"
 			]
 		}
 	]
