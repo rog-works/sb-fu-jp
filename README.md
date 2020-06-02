@@ -34,7 +34,19 @@ Star Bound Frackin' Universe日本語化ツール
 
 # 使用方法
 
-# 1. リポジトリクローン
+## 流れ
+
+1. リポジトリクローン
+2. GASに翻訳APIを設置
+3. `config.py`内の`GAS_URL`に(2)で作成したWebAPIのURLを設定
+4. FUのMODデータをアンパック
+5. アンパックしたMODデータを作業ディレクトリにコピー
+6. MODデータを翻訳
+7. 翻訳済みのMODデータ再パック
+8. 翻訳済みのMODデータで元データを上書き
+9. `Star Bound`を起動
+
+## 1. リポジトリクローン
 
 ```bash
 # 任意の作業ディレクトリ移動
@@ -69,7 +81,7 @@ config = {
 }
 ```
 
-## 5. FUのMODデータをアンパック
+## 4. FUのMODデータをアンパック
 
 ```bash
 # アンパックツールが存在するディレクトリに移動
@@ -85,7 +97,7 @@ $ cp contents.pak ./contents.pak.bak
 $ asset_unpack.exe contents.pak fu_assets/
 ```
 
-## 2. アンパックしたMODデータを作業ディレクトリに移動
+## 5. アンパックしたMODデータを作業ディレクトリにコピー
 
 ```bash
 # 作業ディレクトリにアンパックしたMODデータを移動
@@ -99,7 +111,7 @@ $ cp asset_packer.exe /path/to/workspace/sb-fu-jp/dest/
 $ cp *.dll /path/to/workspace/sb-fu-jp/dest/
 ```
 
-## 3. MODデータを翻訳
+## 6. MODデータを翻訳
 
 ```bash
 $ cd /path/to/workspace/sb-fu-jp/
@@ -111,7 +123,7 @@ $ bash 1-quest-trans.sh
 $ bash 2-item-trans.sh
 ```
 
-## 4. 翻訳済みのMODデータ再パック
+## 7. 翻訳済みのMODデータ再パック
 
 ```bash
 # 出力ディレクトリに移動
@@ -121,12 +133,12 @@ $ cd /path/to/workspace/sb-fu-jp/dest/
 $ asset_packer.exe fu_assets contents.pak
 ```
 
-## 5. 翻訳済みのMODデータで元データを上書き
+## 8. 翻訳済みのMODデータで元データを上書き
 
 ```bash
 $ mv contents.pak /path/to/steamapps/workshop/content/211820/729480149/
 ```
 
-## 6. `Star Bound`を起動
+## 9. `Star Bound`を起動
 
 正常にゲームが起動すれば成功！
