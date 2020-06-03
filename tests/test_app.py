@@ -16,13 +16,18 @@ class TestApp(TestCase):
     ARGV = [
         'trans.py',
         '--dest', 'dest',
-        '--keys', 'description',
+        '--keys', 'text,title',
         '--files', ','.join([
-            'fu_assets/items/active/crewcontracts/crewcontract_arctic.activeitem',
-            'fu_assets/items/active/fishingrod/profishingrod.activeitem',
-            'fu_assets/items/armors/slimenobleblack/slimenobleblack.chest',
-            'fu_assets/items/active/shields/durasteelshield.activeitem',
+            'fu_assets/quests/ancienttemple.questtemplate',
+            'fu_assets/quests/alienjungle.questtemplate',
         ]),
+        # '--keys', 'description',
+        # '--files', ','.join([
+        #     'fu_assets/items/active/crewcontracts/crewcontract_arctic.activeitem',
+        #     'fu_assets/items/active/fishingrod/profishingrod.activeitem',
+        #     'fu_assets/items/armors/slimenobleblack/slimenobleblack.chest',
+        #     'fu_assets/items/active/shields/durasteelshield.activeitem',
+        # ]),
     ]
 
     def test_run(self):
@@ -34,10 +39,13 @@ class TestApp(TestCase):
                     args = Args(self.ARGV)
                     App(args).run()
 
-                    for index, src_filepath in enumerate(args.files):
-                        call = save_mock.call_args_list[index][0]
+                    trans_index = 0
+                    for file_index, src_filepath in enumerate(args.files):
+                        call = save_mock.call_args_list[file_index][0]
                         actual_filepath, actual_data = call
                         expected_filepath = f'{args.dest}/{src_filepath}'
-                        expected_text = self.RES['results'][f't{index}']
                         self.assertEqual(expected_filepath, actual_filepath)
-                        self.assertEqual(expected_text, actual_data['description'])
+                        for json_path in args.keys:
+                            expected_text = self.RES['results'][f't{trans_index}']
+                            self.assertEqual(expected_text, actual_data[json_path])
+                            trans_index = trans_index + 1
