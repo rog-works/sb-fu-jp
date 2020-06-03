@@ -29,7 +29,7 @@ class Worker:
     def prepare(self) -> str:
         pre_text = self._org_text
         for index, control in enumerate(self._controls):
-            pattern = re.compile('\\^' + control.code + ';([^^]+)\\^reset;')
+            pattern = re.compile('\\^\\s*' + control.code + ';([^^]+)(\\^reset;)?')
             replace = '${' + str(index).zfill(4) + '}' + control.org_words + '${/}'
             pre_text = re.sub(pattern, replace, pre_text)
 
@@ -38,7 +38,7 @@ class Worker:
     def post(self, trans_text: str):
         post_text = trans_text
         for index, control in enumerate(self._controls):
-            pattern = re.compile('\\$\\s*\\{' + str(index).zfill(4) + '\\}\\s*([^$]+)\\s*\\$\\s*\\{/\\}')
+            pattern = re.compile('\\$\\s*\\{' + str(index).zfill(4) + '\\}([^$]+)\\$\\s*\\{/\\}')
             replace = f'^{control.code};\\1 (org: {control.org_words})^reset;'
             post_text = re.sub(pattern, replace, post_text)
 
@@ -83,7 +83,7 @@ class Mod:
         return org_text, self._parse_controls(org_text)
 
     def _parse_controls(self, org_text: str) -> List[Control]:
-        matches = re.finditer(r'\^([a-z]+);([^\^]+)\^reset;', org_text)
+        matches = re.finditer(r'\^\s*([a-z]+);([^\^]+)(\^reset;)?', org_text)
         controls = []
         for match in matches:
             code, org_words = match.group(1, 2)
