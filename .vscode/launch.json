@@ -5,15 +5,15 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Python: Current File",
+			"name": "Python: App File",
 			"type": "python",
 			"request": "launch",
-			"program": "${file}",
+			"program": "${workspaceFolder}/app.py",
 			"console": "integratedTerminal",
 			"args": [
-				"--dest", "dest/",
-				"--keys", "description",
-				"--files", "fu_assets/quests/tech/other/emergencybounce.questtemplate"
+				"--dest", "dest",
+				"--keys", "text,title",
+				"--files", "fu_assets/quests/avianhydro.questtemplate"
 			]
 		},
 		{
