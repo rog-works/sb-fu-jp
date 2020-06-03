@@ -46,7 +46,7 @@ class Worker:
         self._finish_log()
 
     def _finish_log(self):
-        logger.info(self._context)
+        logger.info(f'finish work. {self._context}')
 
 
 class Mod:

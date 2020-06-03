@@ -19,7 +19,10 @@ class App:
 
     def run(self):
         if len(self._args.files) == 0:
+            logger.info('file none.')
             return
+
+        logger.info(f'Start tranlation. file counts = {len(self._args.files)}')
 
         mods: List[Mod] = []
         for filepath in self._args.files:
@@ -28,13 +31,18 @@ class App:
             except Exception as e:
                 logger.error(f'Prepare procesing error! file = {filepath} error = {e}')
 
-        self._translator.perform()
+        try:
+            self._translator.perform()
+        except Exception as e:
+            logger.error(f'Translation error. error = {e}')
 
         for mod in mods:
             try:
                 self._run_post(mod)
             except Exception as e:
                 logger.error(f'Post procesing error! file = {mod.filepath} error = {e}')
+
+        logger.info('Finish tranlation.')
 
     def _run_prepare(self, filepath: str) -> Mod:
         data = self._storage.load(filepath)
@@ -47,6 +55,7 @@ class App:
     def _run_post(self, mod: Mod):
         if mod.has_translate:
             self._storage.save(f'{self._args.dest}/{mod.filepath}', mod.translated())
+            logger.info(f'file saved. {self._args.dest}/{mod.filepath}')
 
 
 if __name__ == '__main__':
