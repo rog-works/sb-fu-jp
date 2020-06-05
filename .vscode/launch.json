@@ -26,6 +26,17 @@
 			"args": [
 				"tests/test_app.py"
 			]
+		},
+		{
+			"name": "Python: Test JsonQuery File",
+			"type": "python",
+			"request": "launch",
+			"module": "unittest",
+			"console": "integratedTerminal",
+			"cwd": "${workspaceFolder}",
+			"args": [
+				"tests/test_jsonquery.py"
+			]
 		}
 	]
 }
