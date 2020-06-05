@@ -48,20 +48,19 @@ class JsonQuery:
         return in_paths
 
     def _pluck(self, node: JsonNode, path: str) -> JsonNode:
-        routes = path.split('.')
         if type(node) is dict and path:
-            key = routes[0]
-            return self._pluck(node[key], '.'.join(routes[1:]))
+            key, *remain = path.split('.')
+            return self._pluck(node[key], '.'.join(remain))
         elif type(node) is list and path:
-            index = int(routes[0])
-            return self._pluck(node[index], '.'.join(routes[1:]))
+            key, *remain = path.split('.')
+            index = int(key)
+            return self._pluck(node[index], '.'.join(remain))
         else:
             return node
 
     def _infuse(self, node: JsonNode, path: str, value: JsonNode):
-        routes = path.split('.')
-        key = routes[0]
-        remain_path = '.'.join(routes[1:])
+        key, *remain = path.split('.')
+        remain_path = '.'.join(remain)
         if type(node) is dict:
             if type(node[key]) is dict:
                 self._infuse(node[key], remain_path, value)
