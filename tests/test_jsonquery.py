@@ -2,8 +2,8 @@ from unittest import TestCase
 from jsonquery import JsonQuery
 
 
-class TestJsonPath(TestCase):
-    def test_find(self):
+class TestJsonQuery(TestCase):
+    def test_find_and_below(self):
         data = {
             'a': 1,
             'b': 'a',
@@ -50,3 +50,14 @@ class TestJsonPath(TestCase):
         rel_str_elem.value = 'b+'
         self.assertEqual(rel_str_elem.value, 'b+')
         self.assertEqual(data['c']['c-b'], 'b+')
+
+        arr_elem = jq.find(r'^d$')[0]
+        self.assertEqual(type(arr_elem.value), list)
+        self.assertEqual(arr_elem.value, data['d'])
+
+        rel_int_elem = arr_elem.below(r'^3.0$')[0]
+        self.assertEqual(rel_int_elem.value, 7)
+        self.assertEqual(data['d'][3][0], 7)
+        rel_int_elem.value = 8
+        self.assertEqual(rel_int_elem.value, 8)
+        self.assertEqual(data['d'][3][0], 8)
