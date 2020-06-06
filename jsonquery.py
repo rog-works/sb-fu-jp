@@ -11,15 +11,9 @@ class JsonQuery:
         self._path = path
 
     def find(self, pattern: str) -> List['JsonQuery']:
-        reg = re.compile(pattern)
         elements = self._parse(self._root, self._path)
+        reg = re.compile(pattern)
         return [element for element in elements if reg.search(element._path)]
-
-    def below(self, pattern: str) -> List['JsonQuery']:
-        reg = re.compile(pattern)
-        elements = self._parse(self._root, self._path)
-        sub_reg = re.compile('^' + self._path.replace(".", "\\.") + '\\.')
-        return [element for element in elements if reg.search(sub_reg.sub('', element._path))]
 
     @property
     def value(self) -> JsonNode:
