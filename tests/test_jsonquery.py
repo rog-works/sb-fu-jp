@@ -40,34 +40,34 @@ class TestJsonQuery(TestCase):
     def test_find(self):
         jq = JsonQuery(self.JSON)
 
-        int_elem = jq.find(r'^a$')
+        int_elem = jq.search(r'^a$')
         self.assertEqual(len(int_elem), 1)
         self.assertEqual(int_elem.first.value, 1)
         self.assertEqual(int_elem.first.value, self.JSON['a'])
 
-        str_elem = jq.find(r'^b$')
+        str_elem = jq.search(r'^b$')
         self.assertEqual(str_elem.first.value, 'a')
         self.assertEqual(str_elem.first.value, self.JSON['b'])
 
-        obj_elem = jq.find(r'^c\.c-c$')
+        obj_elem = jq.search(r'^c\.c-c$')
         self.assertEqual(type(obj_elem.first.value), dict)
         self.assertEqual(obj_elem.first.value, self.JSON['c']['c-c'])
 
-        obj_int_elem = obj_elem.find(r'^c-c-a$')
+        obj_int_elem = obj_elem.search(r'^c-c-a$')
         self.assertEqual(obj_int_elem.first.value, 3)
         self.assertEqual(obj_int_elem.first.value, self.JSON['c']['c-c']['c-c-a'])
 
-        arr_elem = jq.find(r'^d\.3$')
+        arr_elem = jq.search(r'^d\.3$')
         self.assertEqual(type(arr_elem.first.value), list)
         self.assertEqual(arr_elem.first.value, self.JSON['d'][3])
 
-        arr_str_elem = arr_elem.find(r'^1$')
+        arr_str_elem = arr_elem.search(r'^1$')
         self.assertEqual(arr_str_elem.first.value, 'h')
         self.assertEqual(arr_str_elem.first.value, self.JSON['d'][3][1])
 
         jq = JsonQuery(self.JSON, delimiter='/')
 
-        int_elem = jq.find(r'^d/2/d-2-a$')
+        int_elem = jq.search(r'^d/2/d-2-a$')
         self.assertEqual(int_elem.first.value, 6)
         self.assertEqual(int_elem.first.value, self.JSON['d'][2]['d-2-a'])
 
@@ -88,7 +88,7 @@ class TestJsonQuery(TestCase):
     def test_setter(self):
         jq = JsonQuery(self.JSON)
 
-        str_elem = jq.find(r'^c\.c-d\.0\.c-d-0-b$')
+        str_elem = jq.search(r'^c\.c-d\.0\.c-d-0-b$')
         self.assertEqual(str_elem.first.value, 'd')
         self.assertEqual(str_elem.first.value, self.JSON['c']['c-d'][0]['c-d-0-b'])
         str_elem.value = 'd+'

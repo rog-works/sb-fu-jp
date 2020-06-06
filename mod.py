@@ -80,7 +80,7 @@ class Mod:
         return f'{self.filepath} {json_path}'
 
     def _parse_row(self, data: dict, json_path: str) -> Tuple[str, List[Control]]:
-        org_text = self._extract(data, json_path)
+        org_text = self._pluck(data, json_path)
         return org_text, self._parse_controls(org_text)
 
     def _parse_controls(self, org_text: str) -> List[Control]:
@@ -95,7 +95,7 @@ class Mod:
     def _path_exists(self, data: dict, json_path: str) -> bool:
         return len(JsonQuery(data).equals(json_path)) > 0
 
-    def _extract(self, data: dict, json_path: str) -> str:
+    def _pluck(self, data: dict, json_path: str) -> str:
         return JsonQuery(data).equals(json_path).first.value
 
     def _infuse(self, data: dict, json_path: str, post_text: str):
