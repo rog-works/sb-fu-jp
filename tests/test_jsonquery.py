@@ -40,28 +40,57 @@ class TestJsonQuery(TestCase):
     def test_find(self):
         jq = JsonQuery(self.JSON)
 
-        int_elem = jq.find(r'^a$')[0]
-        self.assertEqual(int_elem.value, 1)
-        self.assertEqual(int_elem.value, self.JSON['a'])
+        int_elem = jq.find(r'^a$')
+        self.assertEqual(len(int_elem), 1)
+        self.assertEqual(int_elem.first.value, 1)
+        self.assertEqual(int_elem.first.value, self.JSON['a'])
 
-        str_elem = jq.find(r'^b$')[0]
-        self.assertEqual(str_elem.value, 'a')
-        self.assertEqual(str_elem.value, self.JSON['b'])
+        str_elem = jq.find(r'^b$')
+        self.assertEqual(str_elem.first.value, 'a')
+        self.assertEqual(str_elem.first.value, self.JSON['b'])
 
-        obj_elem = jq.find(r'^c.c-c$')[0]
-        self.assertEqual(type(obj_elem.value), dict)
-        self.assertEqual(obj_elem.value, self.JSON['c']['c-c'])
+        obj_elem = jq.find(r'^c\.c-c$')
+        self.assertEqual(type(obj_elem.first.value), dict)
+        self.assertEqual(obj_elem.first.value, self.JSON['c']['c-c'])
 
-        arr_elem = jq.find(r'^d.3$')[0]
-        self.assertEqual(type(arr_elem.value), list)
-        self.assertEqual(arr_elem.value, self.JSON['d'][3])
+        obj_int_elem = obj_elem.find(r'^c-c-a$')
+        self.assertEqual(obj_int_elem.first.value, 3)
+        self.assertEqual(obj_int_elem.first.value, self.JSON['c']['c-c']['c-c-a'])
+
+        arr_elem = jq.find(r'^d\.3$')
+        self.assertEqual(type(arr_elem.first.value), list)
+        self.assertEqual(arr_elem.first.value, self.JSON['d'][3])
+
+        arr_str_elem = arr_elem.find(r'^1$')
+        self.assertEqual(arr_str_elem.first.value, 'h')
+        self.assertEqual(arr_str_elem.first.value, self.JSON['d'][3][1])
+
+        jq = JsonQuery(self.JSON, delimiter='/')
+
+        int_elem = jq.find(r'^d/2/d-2-a$')
+        self.assertEqual(int_elem.first.value, 6)
+        self.assertEqual(int_elem.first.value, self.JSON['d'][2]['d-2-a'])
+
+    def test_equals(self):
+        jq = JsonQuery(self.JSON)
+
+        obj_elem = jq.equals('d.2')
+        self.assertEqual(len(obj_elem), 1)
+        self.assertEqual(type(obj_elem.first.value), dict)
+        self.assertEqual(obj_elem.first.value, self.JSON['d'][2])
+
+    def test_startswith(self):
+        jq = JsonQuery(self.JSON)
+
+        elems = jq.startswith('d.2')
+        self.assertEqual(len(elems), 3)
 
     def test_setter(self):
         jq = JsonQuery(self.JSON)
 
-        str_elem = jq.find(r'^c.c-d.0.c-d-0-b$')[0]
-        self.assertEqual(str_elem.value, 'd')
-        self.assertEqual(str_elem.value, self.JSON['c']['c-d'][0]['c-d-0-b'])
+        str_elem = jq.find(r'^c\.c-d\.0\.c-d-0-b$')
+        self.assertEqual(str_elem.first.value, 'd')
+        self.assertEqual(str_elem.first.value, self.JSON['c']['c-d'][0]['c-d-0-b'])
         str_elem.value = 'd+'
-        self.assertEqual(str_elem.value, 'd+')
-        self.assertEqual(str_elem.value, self.JSON['c']['c-d'][0]['c-d-0-b'])
+        self.assertEqual(str_elem.first.value, 'd+')
+        self.assertEqual(str_elem.first.value, self.JSON['c']['c-d'][0]['c-d-0-b'])

@@ -3,6 +3,7 @@ from copy import deepcopy
 from typing import List, Dict, Tuple
 from dataclasses import dataclass
 from logger import logger
+from jsonquery import JsonQuery
 
 
 @dataclass
@@ -92,10 +93,10 @@ class Mod:
         return controls
 
     def _path_exists(self, data: dict, json_path: str) -> bool:
-        return json_path in self._data
+        return len(JsonQuery(data).equals(json_path)) > 0
 
     def _extract(self, data: dict, json_path: str) -> str:
-        return data[json_path]
+        return JsonQuery(data).equals(json_path).first.value
 
     def _infuse(self, data: dict, json_path: str, post_text: str):
-        data[json_path] = post_text
+        JsonQuery(data).equals(json_path).first.value = post_text
