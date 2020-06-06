@@ -37,7 +37,7 @@ class TestJsonQuery(TestCase):
         ],
     }
 
-    def test_find(self):
+    def test_search(self):
         jq = JsonQuery(self.JSON)
 
         int_elem = jq.search(r'^a$')
