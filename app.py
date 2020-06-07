@@ -69,7 +69,7 @@ class App:
             for json_path, worker in mod.workers.items():
                 self._record.translation(mod.filepath, json_path, worker.digest)
 
-            logger.info(f'Translation mod. from {mod.filepath}')
+            logger.info(f'Mod translation. {config["DEST_DIR"]}/{mod.filepath}')
 
     def _finish(self):
         self._record.flush()

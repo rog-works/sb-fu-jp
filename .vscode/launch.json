@@ -11,9 +11,7 @@
 			"program": "${workspaceFolder}/app.py",
 			"console": "integratedTerminal",
 			"args": [
-				"--dest", "dest",
-				"--keys", "text,title",
-				"--files", "fu_assets/quests/avianhydro.questtemplate"
+				"--target", "tests"
 			]
 		},
 		{
