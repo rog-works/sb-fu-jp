@@ -10,7 +10,7 @@ class TestMod(TestCase):
             'cccc': '^ green;abcd. abcd. abcd.^reset;',
             'dddd': '^ green;abcd',
             'eeee': '^green;abcd^reset;efgh^orange;ijkl^reset;',
-            'ffff': '^ green;abcd^reset;efgh^ orange;ijkl^reset;mnop',
+            'ffff': '^ orange;[abcd^reset;efgh^ orange;ijkl^reset;mnop]',
         }
         prepare_expected = [
             '${0000}abcd${/}',
@@ -18,7 +18,7 @@ class TestMod(TestCase):
             '${0000}abcd. abcd. abcd.${/}',
             '${0000}abcd${/}',
             '${0000}abcd${/}efgh${0001}ijkl${/}',
-            '${0000}abcd${/}efgh${0001}ijkl${/}mnop',
+            '${0000}[abcd${/}efgh${0001}ijkl${/}mnop]',
         ]
         transes = [
             '${0000}あいう${/}',
@@ -26,7 +26,7 @@ class TestMod(TestCase):
             '$ {0000} あいう. あいう. あいう.$ {/}',
             '$ {0000}あいう $ {/}',
             '$ {0000} あいう ${/}えおか $ {0001} きくけ ${/}',
-            '$ {0000}あいう${/}えおか$ {0001}きくけ$ {/} こさし',
+            '$ {0000}[あいう${/}えおか$ {0001}きくけ$ {/} こさし]',
         ]
         post_expected = [
             '^green;あいう (org: abcd)^reset;',
@@ -34,7 +34,7 @@ class TestMod(TestCase):
             '^green; あいう. あいう. あいう. (org: abcd. abcd. abcd.)^reset;',
             '^green;あいう  (org: abcd)^reset;',
             '^green; あいう  (org: abcd)^reset;えおか ^orange; きくけ  (org: ijkl)^reset;',
-            '^green;あいう (org: abcd)^reset;えおか^orange;きくけ (org: ijkl)^reset; こさし',
+            '^orange;[あいう (org: [abcd)^reset;えおか^orange;きくけ (org: ijkl)^reset; こさし]',
         ]
         keys = list(data.keys())
         mod = Mod('filepath', data)

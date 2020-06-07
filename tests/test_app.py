@@ -17,6 +17,8 @@ class TestApp(TestCase):
             't1': 'い',
             't2': 'う',
             't3': 'え',
+            't4': 'お',
+            't5': 'か',
         },
     }
     ARGV = [

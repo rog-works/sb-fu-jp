@@ -56,8 +56,8 @@ class App:
 
     def _run_prepare(self, filepath: str, json_paths: List[str]) -> Mod:
         mod = Mod.load(filepath)
-        for json_path, worker in mod.build_workers(json_paths).items():
-            if not self._record.translated(mod.filepath, json_path, worker.digest):
+        if not self._record.translated(mod.filepath, mod.digest):
+            for worker in mod.build_workers(json_paths).values():
                 self._translator.promise(worker.prepare(), worker.post)
 
         return mod
@@ -65,9 +65,7 @@ class App:
     def _run_post(self, mod: Mod):
         if mod.can_translation:
             mod.save(f'{config["DEST_DIR"]}/{mod.filepath}', mod.translation())
-
-            for json_path, worker in mod.workers.items():
-                self._record.translation(mod.filepath, json_path, worker.digest)
+            self._record.translation(mod.filepath, mod.digest)
 
             logger.info(f'Mod translation. {config["DEST_DIR"]}/{mod.filepath}')
 

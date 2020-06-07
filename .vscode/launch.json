@@ -15,7 +15,7 @@
 			]
 		},
 		{
-			"name": "Python: Test File",
+			"name": "Python: Test App File",
 			"type": "python",
 			"request": "launch",
 			"module": "unittest",
@@ -23,6 +23,17 @@
 			"cwd": "${workspaceFolder}",
 			"args": [
 				"tests/test_app.py"
+			]
+		},
+		{
+			"name": "Python: Test Mod File",
+			"type": "python",
+			"request": "launch",
+			"module": "unittest",
+			"console": "integratedTerminal",
+			"cwd": "${workspaceFolder}",
+			"args": [
+				"tests/test_mod.py"
 			]
 		},
 		{
