@@ -1,33 +1,43 @@
 import sys
 from typing import List
 from args import Args
-from storage import Storage
 from translator import Translator
 from mod import Mod
 from logger import logger
 from config import config
+from record import Record
+from target import Target
 
 
 class App:
-    GAS_URL = config['GAS_URL']
-    TOHGHER_LIMIT_SIZE = 5000
-
     def __init__(self, args: Args) -> None:
-        self._translator = Translator(self.GAS_URL, self.TOHGHER_LIMIT_SIZE)
-        self._storage = Storage()
         self._args = args
+        self._translator = Translator(config['GAS_URL'], config['REQUEST_SIZE_LIMIT'])
+        self._record = Record(config['RECORD_FILEPATH'])
+        if self._args.force:
+            self._record.clear()
 
     def run(self):
-        if len(self._args.files) == 0:
-            logger.info('file none.')
+        if len(self._args.targets) == 0:
+            logger.info('target none.')
             return
 
-        logger.info(f'Start tranlation. file counts = {len(self._args.files)}')
+        logger.info('Start tranlation.')
+
+        for target_key in self._args.targets:
+            self._run_target(Target(target_key))
+
+        self._finish()
+
+        logger.info('Finish tranlation.')
+
+    def _run_target(self, target: Target):
+        logger.info(f'Start {target.key} translation. file counts = {len(target.files)}, json paths = {",".join(target.json_paths)}')
 
         mods: List[Mod] = []
-        for filepath in self._args.files:
+        for filepath in target.files:
             try:
-                mods.append(self._run_prepare(filepath))
+                mods.append(self._run_prepare(filepath, target.json_paths))
             except Exception as e:
                 logger.error(f'Prepare procesing error! file = {filepath} error = {e}')
 
@@ -42,20 +52,25 @@ class App:
             except Exception as e:
                 logger.error(f'Post procesing error! file = {mod.filepath} error = {e}')
 
-        logger.info('Finish tranlation.')
+        logger.info(f'Finish {target.key} tranlation.')
 
-    def _run_prepare(self, filepath: str) -> Mod:
-        data = self._storage.load(filepath)
-        mod = Mod(filepath, data)
-        for worker in mod.works(self._args.keys):
-            self._translator.promise(worker.prepare(), worker.post)
+    def _run_prepare(self, filepath: str, json_paths: List[str]) -> Mod:
+        mod = Mod.load(filepath)
+        if not self._record.translated(mod.filepath, mod.digest):
+            for worker in mod.works(json_paths):
+                self._translator.promise(worker.prepare(), worker.post)
 
         return mod
 
     def _run_post(self, mod: Mod):
-        if mod.has_translate:
-            self._storage.save(f'{self._args.dest}/{mod.filepath}', mod.translated())
-            logger.info(f'file saved. {self._args.dest}/{mod.filepath}')
+        if mod.can_translation:
+            mod.save(f'{config["DEST_DIR"]}/{mod.filepath}', mod.translation())
+            self._record.translation(mod.filepath, mod.digest)
+
+            logger.info(f'Translation mod. from {mod.filepath}')
+
+    def _finish(self):
+        self._record.flush()
 
 
 if __name__ == '__main__':

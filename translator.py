@@ -21,9 +21,9 @@ class Promise:
 
 
 class Translator:
-    def __init__(self, url: str, together_limit_size: int) -> None:
+    def __init__(self, url: str, request_size_limit: int) -> None:
         self._url = url
-        self._together_limit_size = together_limit_size
+        self._request_size_limit = request_size_limit
         self._promises: List[Promise] = []
 
     def promise(self, text: str, resolver: Callable):
@@ -48,7 +48,7 @@ class Translator:
         total_text_size = 0
         for index, promise in enumerate(self._promises[start:]):
             text_size = len(parse.quote(promise.text))
-            if total_text_size + text_size < self._together_limit_size:
+            if total_text_size + text_size < self._request_size_limit:
                 total_text_size = total_text_size + text_size
             else:
                 return start + index

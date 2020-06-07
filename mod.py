@@ -1,8 +1,11 @@
 import re
+import hashlib
+import json
 from copy import deepcopy
 from typing import List, Dict, Tuple
 from dataclasses import dataclass
 from logger import logger
+from storage import Storage
 from jsonquery import JsonQuery
 
 
@@ -51,13 +54,23 @@ class Worker:
 
 
 class Mod:
+    _storage = Storage()
+
+    @classmethod
+    def load(cls, filepath: str) -> 'Mod':
+        return cls(filepath, cls._storage.load(filepath))
+
     def __init__(self, filepath: str, data: dict) -> None:
         self.filepath = filepath
         self._data = data
         self._workers: Dict[str, Worker] = {}
+        self.digest = self._calc_digest(data)
+
+    def save(self, filepath: str, data: dict):
+        self._storage.save(filepath, data)
 
     @property
-    def has_translate(self) -> bool:
+    def can_translation(self) -> bool:
         return len([worker for worker in self._workers.values() if worker.finished]) > 0
 
     def works(self, json_paths: List[str]) -> List[Worker]:
@@ -69,12 +82,15 @@ class Mod:
 
         return [worker for worker in self._workers.values()]
 
-    def translated(self) -> dict:
+    def translation(self) -> dict:
         result = deepcopy(self._data)
         for json_path, worker in self._workers.items():
             self._infuse(result, json_path, worker.result)
 
         return result
+
+    def _calc_digest(self, data: dict) -> str:
+        return hashlib.md5(json.dumps(data).encode('utf-8')).hexdigest()
 
     def _context(self, json_path: str) -> str:
         return f'{self.filepath} {json_path}'

@@ -3,31 +3,26 @@ from typing import List, Tuple
 
 class Args:
     def __init__(self, argv: List[str]) -> None:
-        dest, keys, files = self.parse(argv)
-        self.dest = dest
-        self.keys = keys
-        self.files = files
+        targets, force = self.parse(argv)
+        self.targets = targets
+        self.force = force
 
-    def parse(self, argv: List[str]) -> Tuple[str, List[str], List[str]]:
-        option = ''
-        dest = ''
-        keys = []
-        files = []
-        for value in argv[1:]:
-            if value.startswith('--'):
-                option = value[2:]
+    def parse(self, argv: List[str]) -> Tuple[List[str], bool]:
+        targets = []
+        force = False
+        index = 0
+        while(index < len(argv)):
+            if index == 0 or not argv[index].startswith('--'):
+                index = index + 1
                 continue
 
-            if len(value) == 0:
-                continue
+            option = argv[index][2:]
+            if option == 'target':
+                index = index + 1
+                targets.append(argv[index])
+            elif option == 'force':
+                force = True
 
-            if option == 'files':
-                files = (value if not value.endswith(',') else value[:-1]).split(',')
-            elif option == 'keys':
-                keys = (value if not value.endswith(',') else value[:-1]).split(',')
-            elif option == 'dest':
-                dest = value
+            index = index + 1
 
-            option = ''
-
-        return dest, keys, files
+        return targets, force

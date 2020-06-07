@@ -1,0 +1,2 @@
+fu_assets/quests/ancienttemple.questtemplate
+fu_assets/quests/alienjungle.questtemplate
