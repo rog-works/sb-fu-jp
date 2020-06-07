@@ -38,7 +38,7 @@ class TestMod(TestCase):
         ]
         keys = list(data.keys())
         mod = Mod('filepath', data)
-        for index, work in enumerate(mod.works(keys)):
-            self.assertEqual(work.prepare(), prepare_expected[index])
-            work.post(transes[index])
-            self.assertEqual(work.result, post_expected[index])
+        for index, worker in enumerate(mod.build_workers(keys).values()):
+            self.assertEqual(worker.prepare(), prepare_expected[index])
+            worker.post(transes[index])
+            self.assertEqual(worker.result, post_expected[index])

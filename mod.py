@@ -1,6 +1,5 @@
 import re
 import hashlib
-import json
 from copy import deepcopy
 from typing import List, Dict, Tuple
 from dataclasses import dataclass
@@ -21,6 +20,7 @@ class Worker:
         self._controls = controls
         self._context = context
         self._post_text = ''
+        self.digest = self._calc_digest(self._org_text)
 
     @property
     def finished(self) -> bool:
@@ -29,6 +29,9 @@ class Worker:
     @property
     def result(self) -> str:
         return self._post_text
+
+    def _calc_digest(self, org_text: str) -> str:
+        return hashlib.md5(org_text.encode('utf-8')).hexdigest()
 
     def prepare(self) -> str:
         pre_text = self._org_text
@@ -64,7 +67,6 @@ class Mod:
         self.filepath = filepath
         self._data = data
         self._workers: Dict[str, Worker] = {}
-        self.digest = self._calc_digest(data)
 
     def save(self, filepath: str, data: dict):
         self._storage.save(filepath, data)
@@ -73,14 +75,18 @@ class Mod:
     def can_translation(self) -> bool:
         return len([worker for worker in self._workers.values() if worker.finished]) > 0
 
-    def works(self, json_paths: List[str]) -> List[Worker]:
+    @property
+    def workers(self) -> Dict[str, Worker]:
+        return self._workers
+
+    def build_workers(self, json_paths: List[str]) -> Dict[str, Worker]:
         for json_path in json_paths:
             if self._path_exists(self._data, json_path):
                 org_text, controls = self._parse_row(self._data, json_path)
                 context = self._context(json_path)
                 self._workers[json_path] = Worker(org_text, controls, context)
 
-        return [worker for worker in self._workers.values()]
+        return self._workers
 
     def translation(self) -> dict:
         result = deepcopy(self._data)
@@ -88,9 +94,6 @@ class Mod:
             self._infuse(result, json_path, worker.result)
 
         return result
-
-    def _calc_digest(self, data: dict) -> str:
-        return hashlib.md5(json.dumps(data).encode('utf-8')).hexdigest()
 
     def _context(self, json_path: str) -> str:
         return f'{self.filepath} {json_path}'
