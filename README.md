@@ -78,6 +78,7 @@ $ vim config.py
 
 config = {
     'GAS_URL': 'https://script.google.com/macros/s/xxxx/exec',  # 設定例
+    ... 中略 ...
 }
 ```
 
@@ -116,11 +117,8 @@ $ cp *.dll /path/to/workspace/sb-fu-jp/dest/
 ```bash
 $ cd /path/to/workspace/sb-fu-jp/
 
-# クエストの翻訳
-$ bash 1-quest-trans.sh
-
-# アイテムの翻訳
-$ bash 2-item-trans.sh
+# 翻訳実行
+$ bash trans.sh
 ```
 
 ## 7. 翻訳済みのMODデータ再パック
