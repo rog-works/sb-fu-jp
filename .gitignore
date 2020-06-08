@@ -1,5 +1,6 @@
+/caches/
 /docker/app/.ssh/authorized_keys
-/fu_assets/
 /dest/
+/fu_assets/
 /tests/record.csv
 /record.csv

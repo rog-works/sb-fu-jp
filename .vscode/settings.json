@@ -5,6 +5,7 @@
 	"python.linting.flake8Enabled": true,
 	"python.linting.enabled": true,
 	"files.watcherExclude": {
+		"**/caches/**": true,
 		"**/fu_assets/**": true,
 		"**/fu_assets_dest/**": true
 	},

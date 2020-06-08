@@ -1,7 +1,9 @@
 from dataclasses import dataclass
 from typing import Callable, List, Dict
 from urllib import parse
+import hashlib
 import requests
+from cache import Cache
 
 
 @dataclass
@@ -27,6 +29,11 @@ class Translator:
         self._promises: List[Promise] = []
 
     def promise(self, text: str, resolver: Callable):
+        digest = self._calc_digest(text)
+        if Cache.exists(digest):
+            resolver(Cache.get(digest)['to'])
+            return
+
         index = len(self._promises)
         key = f't{index}'
         promise = Promise(key, text, resolver)
@@ -40,9 +47,14 @@ class Translator:
             res = self._trans_to_jp(promises)
             for promise in promises:
                 if promise.key in res.results:
+                    digest = self._calc_digest(promise.text)
+                    Cache.set(digest, {'from': promise.text, 'to': res.results[promise.key]})
                     promise.resolve(res.results[promise.key])
 
             start = end
+
+    def _calc_digest(self, text: str) -> str:
+        return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
     def _collect_promises(self, start: int) -> int:
         total_text_size = 0
