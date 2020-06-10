@@ -29,6 +29,7 @@
 			"console": "integratedTerminal",
 			"args": [
 				"--target", "quests",
+				"--target", "items",
 				"--discover"
 			]
 		},

@@ -2,6 +2,7 @@
 /dest/
 /docker/app/.ssh/authorized_keys
 /fu_assets/
+/targets/tests/
 /tests/caches/
 /tests/record.csv
 /record.csv
