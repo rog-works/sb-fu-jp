@@ -23,15 +23,16 @@ class Promise:
 
 
 class Translator:
-    def __init__(self, url: str, request_size_limit: int) -> None:
+    def __init__(self, url: str, cache: Cache, request_size_limit: int) -> None:
         self._url = url
+        self._cache = cache
         self._request_size_limit = request_size_limit
         self._promises: List[Promise] = []
 
     def promise(self, text: str, resolver: Callable):
         digest = self._calc_digest(text)
-        if Cache.exists(digest):
-            resolver(Cache.get(digest)['to'])
+        if self._cache.exists(digest):
+            resolver(self._cache.get(digest)['to'])
             return
 
         index = len(self._promises)
@@ -48,7 +49,7 @@ class Translator:
             for promise in promises:
                 if promise.key in res.results:
                     digest = self._calc_digest(promise.text)
-                    Cache.set(digest, {'from': promise.text, 'to': res.results[promise.key]})
+                    self._cache.set(digest, {'from': promise.text, 'to': res.results[promise.key]})
                     promise.resolve(res.results[promise.key])
 
             start = end

@@ -1,6 +1,7 @@
 import sys
 from typing import List
 from args import Args
+from cache import Cache
 from translator import Translator
 from mod import Mod
 from logger import logger
@@ -12,7 +13,7 @@ from target import Target
 class App:
     def __init__(self, args: Args) -> None:
         self._args = args
-        self._translator = Translator(config['GAS_URL'], config['REQUEST_SIZE_LIMIT'])
+        self._translator = Translator(config['GAS_URL'], Cache(config['CACHE_DIR']), config['REQUEST_SIZE_LIMIT'])
         self._record = Record(config['RECORD_FILEPATH'])
         if self._args.force:
             self._record.clear()
@@ -25,19 +26,22 @@ class App:
         logger.info('Start tranlation.')
 
         for target_key in self._args.targets:
-            self._run_target(Target(target_key))
+            if self._args.discover:
+                self._run_target(Target.auto_discovery(target_key))
+            else:
+                self._run_target(Target.from_config(target_key))
 
         self._finish()
 
         logger.info('Finish tranlation.')
 
     def _run_target(self, target: Target):
-        logger.info(f'Start {target.key} translation. file counts = {len(target.files)}, json paths = {",".join(target.json_paths)}')
+        logger.info(f'Start {target.key} translation. counts = {len(target.targets)}')
 
         mods: List[Mod] = []
-        for filepath in target.files:
+        for filepath, json_paths in target.targets.items():
             try:
-                mods.append(self._run_prepare(filepath, target.json_paths))
+                mods.append(self._run_prepare(filepath, json_paths))
             except Exception as e:
                 logger.error(f'Prepare procesing error! file = {filepath} error = {e}')
 

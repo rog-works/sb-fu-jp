@@ -8,12 +8,16 @@ JsonNode = TypeVar('JsonNode', int, float, str, dict, list)
 
 
 class JsonQueryElement:
-    def __init__(self, node: JsonNode, path: str = '', full_path: str = '', root: Optional[JsonNode] = None, delimiter: str = '.') -> None:
+    def __init__(self, node: JsonNode, path: str = '', full_path: str = '', root: Optional[JsonNode] = None, delimiter: str = '.', leaf_only: bool = False) -> None:
         self._node = node
         self._path = path
         self._root = root if root else self._node
         self._full_path = full_path
         self._delimiter = delimiter
+        self._leaf_only = leaf_only
+
+    def all(self) -> List['JsonQueryElement']:
+        return self._find(lambda path: True)
 
     def search(self, pattern: str) -> List['JsonQueryElement']:
         reg = re.compile(pattern)
@@ -30,12 +34,20 @@ class JsonQueryElement:
         return [element for element in elements if tester(element._path)]
 
     @property
+    def full_path(self) -> str:
+        return self._full_path
+
+    @property
     def value(self) -> JsonNode:
         return self._pluck(self._root, self._full_path)
 
     @value.setter
     def value(self, value: JsonNode):
         self._infuse(self._root, self._full_path, value)
+
+    @property
+    def text(self) -> str:
+        return str(self.value)
 
     def _parse(self, root: JsonNode, full_path: str) -> List['JsonQueryElement']:
         parent_node = self._pluck(root, full_path) if full_path else root
@@ -49,7 +61,7 @@ class JsonQueryElement:
 
     def _pathfy(self, node: JsonNode, path: str) -> List[str]:
         in_paths: List[str] = []
-        if path:
+        if path and not self._leaf_only:
             in_paths.append(path)
 
         if type(node) is dict:
@@ -58,6 +70,8 @@ class JsonQueryElement:
         elif type(node) is list:
             for index in range(len(node)):
                 in_paths.extend(self._pathfy(node[index], f'{path}{self._delimiter}{index}' if path else str(index)))
+        elif self._leaf_only:
+            in_paths.append(path)
 
         return in_paths
 
@@ -93,24 +107,33 @@ class JsonQueryElement:
 
 
 class JsonQuery:
-    def __init__(self, node: JsonNode, delimiter: str = '.') -> None:
-        self._root_elem = JsonQueryElement(node, delimiter=delimiter)
+    def __init__(self, node: JsonNode, delimiter: str = '.', leaf_only: bool = False) -> None:
+        self._root_elem = JsonQueryElement(node, delimiter=delimiter, leaf_only=leaf_only)
         self._elements: List[JsonQueryElement] = []
 
+    def all(self) -> 'JsonQuery':
+        jq = JsonQuery(self._root_elem._node, delimiter=self._root_elem._delimiter, leaf_only=self._root_elem._leaf_only)
+        jq._elements = list(flatten([element.all() for element in self._elements])) if self._elements else self._root_elem.all()
+        return jq
+
     def search(self, pattern: str) -> 'JsonQuery':
-        jq = JsonQuery(self._root_elem._node, self._root_elem._delimiter)
+        jq = JsonQuery(self._root_elem._node, delimiter=self._root_elem._delimiter, leaf_only=self._root_elem._leaf_only)
         jq._elements = list(flatten([element.search(pattern) for element in self._elements])) if self._elements else self._root_elem.search(pattern)
         return jq
 
     def equals(self, pattern: str) -> 'JsonQuery':
-        jq = JsonQuery(self._root_elem._node, self._root_elem._delimiter)
+        jq = JsonQuery(self._root_elem._node, delimiter=self._root_elem._delimiter, leaf_only=self._root_elem._leaf_only)
         jq._elements = list(flatten([element.equals(pattern) for element in self._elements])) if self._elements else self._root_elem.equals(pattern)
         return jq
 
     def startswith(self, pattern: str) -> 'JsonQuery':
-        jq = JsonQuery(self._root_elem._node, self._root_elem._delimiter)
+        jq = JsonQuery(self._root_elem._node, delimiter=self._root_elem._delimiter, leaf_only=self._root_elem._leaf_only)
         jq._elements = list(flatten([element.startswith(pattern) for element in self._elements])) if self._elements else self._root_elem.startswith(pattern)
         return jq
+
+    @property
+    def full_path(self) -> List[str]:
+        return [element.full_path for element in self._elements]
 
     @property
     def value(self) -> List[JsonNode]:
@@ -122,6 +145,10 @@ class JsonQuery:
             element.value = value
 
     @property
+    def text(self) -> str:
+        return ''.join(map(str, self.value))
+
+    @property
     def first(self) -> JsonQueryElement:
         return self._elements[0]
 
@@ -129,7 +156,7 @@ class JsonQuery:
         for element in self._elements:
             yield element
 
-        raise StopIteration()
+        return
 
     def __len__(self) -> int:
         return len(self._elements)

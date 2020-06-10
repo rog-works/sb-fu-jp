@@ -9,6 +9,7 @@ class TestApp(TestCase):
         'REQUEST_SIZE_LIMIT': 5000,
         'RECORD_FILEPATH': 'tests/record.csv',
         'DEST_DIR': 'dest/',
+        'CACHE_DIR': 'tests/caches/',
     }
     RES = {
         'code': 200,
@@ -38,13 +39,13 @@ class TestApp(TestCase):
 
                     trans_index = 0
                     for target_key in args.targets:
-                        target = Target(target_key)
-                        for file_index, src_filepath in enumerate(target.files):
+                        target = Target.from_config(target_key)
+                        for file_index, src_filepath in enumerate(target.targets.keys()):
                             call = save_mock.call_args_list[file_index][0]
                             actual_filepath, actual_data = call
                             expected_filepath = f'{self.CONFIG["DEST_DIR"]}/{src_filepath}'
                             self.assertEqual(expected_filepath, actual_filepath)
-                            for json_path in target.json_paths:
+                            for json_path in target.targets[src_filepath]:
                                 expected_text = self.RES['results'][f't{trans_index}']
                                 self.assertEqual(expected_text, actual_data[json_path])
                                 trans_index = trans_index + 1

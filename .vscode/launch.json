@@ -5,13 +5,31 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Python: App File",
+			"name": "Python: Current File",
+			"type": "python",
+			"request": "launch",
+			"program": "${file}",
+			"console": "integratedTerminal",
+		},
+		{
+			"name": "Python: App File from config",
 			"type": "python",
 			"request": "launch",
 			"program": "${workspaceFolder}/app.py",
 			"console": "integratedTerminal",
 			"args": [
 				"--target", "tests"
+			]
+		},
+		{
+			"name": "Python: App File auto discovery",
+			"type": "python",
+			"request": "launch",
+			"program": "${workspaceFolder}/app.py",
+			"console": "integratedTerminal",
+			"args": [
+				"--target", "quests",
+				"--discover"
 			]
 		},
 		{

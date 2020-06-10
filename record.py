@@ -45,7 +45,7 @@ class Record:
             rows: Dict[str, RecordRow] = {}
             for line in lines[1:]:
                 row = RecordRow(**{columns[index]: value for index, value in enumerate(line.split(','))})
-                rows[filepath] = row
+                rows[row.filepath] = row
 
             return rows
 
