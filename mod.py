@@ -42,7 +42,7 @@ class Worker:
     def post(self, trans_text: str):
         post_text = trans_text
         for index, control in enumerate(self._controls):
-            pattern = re.compile('\\$\\s*\\{' + str(index).zfill(4) + '\\}([^$]+)\\$\\s*\\{/\\}')
+            pattern = re.compile('\\$\\s*\\{\\s*' + str(index).zfill(4) + '\\s*\\}([^$]+)\\$\\s*\\{/\\}')
             replace = f'^{control.code};\\1 (org: {control.org_words})^reset;'
             post_text = re.sub(pattern, replace, post_text)
 
