@@ -26,4 +26,4 @@ class Discovery:
         return [filepath for filepath in filepaths if reg.search(filepath)]
 
     def discover(self, data: dict) -> List[str]:
-        return [elem.full_path for elem in JsonQuery(data, leaf_only=True).all() if elem.text.find(' ') != -1]
+        return [elem.full_path for elem in JsonQuery(data).leaf() if elem.text.find(' ') != -1]
