@@ -71,7 +71,7 @@ class Mod:
 
     @property
     def can_translation(self) -> bool:
-        return len([worker for worker in self._workers.values() if worker.finished]) > 0
+        return len([worker for worker in self._workers.values() if worker.finished]) == len(self._workers)
 
     @property
     def workers(self) -> Dict[str, Worker]:
