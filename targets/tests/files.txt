@@ -1,1 +1,3 @@
-fu_assets/items/generic/produce/banana.consumable.patch
+fu_assets/quests/ancienttemple.questtemplate
+fu_assets/quests/alienjungle.questtemplate
+fu_assets/quests/fu_questlines/science/chemistry/create_iodine.questtemplate

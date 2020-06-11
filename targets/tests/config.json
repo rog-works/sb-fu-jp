@@ -1,6 +1,6 @@
 {
 	"json_paths": [
-		"2.0.value",
-		"3.1.value"
+		"title",
+		"text"
 	]
 }
