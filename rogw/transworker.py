@@ -1,6 +1,7 @@
+from dataclasses import dataclass
 import re
 from typing import List
-from dataclasses import dataclass
+
 from rogw.logger import logger
 from rogw.worker import IWorker
 

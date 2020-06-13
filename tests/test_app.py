@@ -1,3 +1,4 @@
+import os
 from unittest import TestCase, mock
 from rogw.args import Args
 from rogw.target import Target

@@ -1,6 +1,7 @@
-import subprocess
 import re
+import subprocess
 from typing import List, Dict
+
 from rogw.jsonquery import JsonQuery
 from rogw.modjson import ModJson
 

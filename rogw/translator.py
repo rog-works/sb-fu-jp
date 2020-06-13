@@ -1,10 +1,11 @@
 from dataclasses import dataclass
-from typing import List, Dict
-from urllib import parse
 import hashlib
 import requests
-from rogw.logger import logger
+from typing import List, Dict
+from urllib import parse
+
 from rogw.cache import Cache
+from rogw.logger import logger
 from rogw.promise import IPromise
 from rogw.worker import IWorker
 

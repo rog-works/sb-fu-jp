@@ -1,9 +1,10 @@
-import json
-import hashlib
 from copy import deepcopy
+import hashlib
+import json
 from typing import Dict
-from rogw.modjson import ModJson
+
 from rogw.jsonquery import JsonQuery
+from rogw.modjson import ModJson
 from rogw.promise import IPromise
 
 

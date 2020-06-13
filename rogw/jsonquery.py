@@ -1,6 +1,6 @@
+import itertools
 import re
 from typing import List, Optional, Callable, TypeVar
-import itertools
 
 
 flatten = itertools.chain.from_iterable

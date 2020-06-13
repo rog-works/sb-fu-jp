@@ -1,14 +1,16 @@
+import os
 import sys
 from typing import List
+
 from rogw.args import Args
 from rogw.cache import Cache
-from rogw.translator import Translator
-from rogw.mod import Mod
-from rogw.logger import logger
 from rogw.config import config
+from rogw.jsonquery import JsonQuery
+from rogw.logger import logger
+from rogw.mod import Mod
 from rogw.record import Record
 from rogw.target import Target
-from rogw.jsonquery import JsonQuery
+from rogw.translator import Translator
 from rogw.transworker import TransWorker
 
 
