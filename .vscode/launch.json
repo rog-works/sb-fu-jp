@@ -35,6 +35,16 @@
 			]
 		},
 		{
+			"name": "Python: Test Discover Files",
+			"type": "python",
+			"request": "launch",
+			"module": "unittest",
+			"console": "integratedTerminal",
+			"args": [
+				"discover", "tests/"
+			]
+		},
+		{
 			"name": "Python: Test App File",
 			"type": "python",
 			"request": "launch",
