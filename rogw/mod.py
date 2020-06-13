@@ -5,7 +5,7 @@ from copy import deepcopy
 from typing import List, Dict, Tuple
 from dataclasses import dataclass
 from rogw.logger import logger
-from rogw.storage import Storage
+from rogw.modjson import ModJson
 from rogw.jsonquery import JsonQuery
 
 
@@ -54,11 +54,11 @@ class Worker:
 
 
 class Mod:
-    _storage = Storage()
+    _json = ModJson()
 
     @classmethod
     def load(cls, filepath: str) -> 'Mod':
-        return cls(filepath, cls._storage.load(filepath))
+        return cls(filepath, cls._json.load(filepath))
 
     def __init__(self, filepath: str, data: dict) -> None:
         self.filepath = filepath
@@ -67,7 +67,7 @@ class Mod:
         self.digest = self._calc_digest(data)
 
     def save(self, filepath: str, data: dict):
-        self._storage.save(filepath, data)
+        self._json.save(filepath, data)
 
     @property
     def can_translation(self) -> bool:

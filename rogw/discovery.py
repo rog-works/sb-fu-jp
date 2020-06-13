@@ -2,16 +2,16 @@ import subprocess
 import re
 from typing import List, Dict
 from rogw.jsonquery import JsonQuery
-from rogw.storage import Storage
+from rogw.modjson import ModJson
 
 
 class Discovery:
-    _storage = Storage()
+    _json = ModJson()
 
     def search(self, dir: str, pattern: str) -> Dict[str, List[str]]:
         discoveries: Dict[str, List[str]] = {}
         for filepath in self.search_files(dir, pattern):
-            data = self._storage.load(filepath)
+            data = self._json.load(filepath)
             discover_json_paths = self.discover(data)
             if discover_json_paths:
                 discoveries[filepath] = discover_json_paths
