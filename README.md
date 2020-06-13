@@ -1,6 +1,10 @@
 Star Bound Frackin' Universe日本語化ツール
 ===
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/1f26d55cf934dda318df/maintainability)](https://codeclimate.com/github/rog-works/sb-fu-jp/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/1f26d55cf934dda318df/test_coverage)](https://codeclimate.com/github/rog-works/sb-fu-jp/test_coverage)
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+
 # 内容
 
 * このリポジトリは`Star Bound`の大型拡張MOD`Frackin' Universe`(以降`FU`)の日本語化ツールです
