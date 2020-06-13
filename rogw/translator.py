@@ -3,6 +3,7 @@ from typing import Callable, List, Dict
 from urllib import parse
 import hashlib
 import requests
+from rogw.logger import logger
 from rogw.cache import Cache
 
 
@@ -44,6 +45,11 @@ class Translator:
         start = 0
         while start < len(self._promises):
             end = self._collect_promises(start)
+            if start == end:
+                logger.warning(f'Skip huge text translation. size = {len(self._promises[start].text)}')
+                start = start + 1
+                continue
+
             promises = self._promises[start:end]
             res = self._trans_to_jp(promises)
             for promise in promises:
@@ -78,7 +84,7 @@ class Translator:
 
     def _fetch(self, url: str) -> dict:
         try:
-            with requests.get(url, allow_redirects=True) as res:
+            with requests.get(url, timeout=30, allow_redirects=True) as res:
                 return res.json()
         except Exception as e:
-            raise Exception('Translation error') from e
+            raise Exception('Translation error. error = {e}') from e
