@@ -28,6 +28,7 @@
 			"program": "${workspaceFolder}/app.py",
 			"console": "integratedTerminal",
 			"args": [
+				"--target", "dialog",
 				"--target", "quests",
 				"--target", "items",
 				"--discover"
@@ -52,7 +53,7 @@
 			"console": "integratedTerminal",
 			"cwd": "${workspaceFolder}",
 			"args": [
-				"tests/test_mod.py"
+				"tests/rogw/test_mod.py"
 			]
 		},
 		{
@@ -63,7 +64,18 @@
 			"console": "integratedTerminal",
 			"cwd": "${workspaceFolder}",
 			"args": [
-				"tests/test_jsonquery.py"
+				"tests/rogw/test_jsonquery.py"
+			]
+		},
+		{
+			"name": "Python: Test ModJson File",
+			"type": "python",
+			"request": "launch",
+			"module": "unittest",
+			"console": "integratedTerminal",
+			"cwd": "${workspaceFolder}",
+			"args": [
+				"tests/rogw/test_modjson.py"
 			]
 		}
 	]

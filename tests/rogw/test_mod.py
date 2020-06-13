@@ -3,7 +3,7 @@ from rogw.mod import Mod
 
 
 class TestMod(TestCase):
-    def test_works(self):
+    def test_build_workers(self):
         data = {
             'aaaa': '^green;abcd^reset;',
             'bbbb': '^green;+1 +2 +3',

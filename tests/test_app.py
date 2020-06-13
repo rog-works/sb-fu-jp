@@ -31,7 +31,7 @@ class TestApp(TestCase):
     def test_run(self):
         with mock.patch.dict('rogw.config.config', self.CONFIG):
             with mock.patch('rogw.translator.Translator._fetch', return_value=self.RES):
-                with mock.patch('rogw.storage.Storage.save') as save_mock:
+                with mock.patch('rogw.modjson.ModJson.save') as save_mock:
                     from app import App
 
                     args = Args(self.ARGV)
