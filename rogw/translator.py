@@ -1,10 +1,12 @@
 from dataclasses import dataclass
-from typing import Callable, List, Dict
+from typing import List, Dict
 from urllib import parse
 import hashlib
 import requests
 from rogw.logger import logger
 from rogw.cache import Cache
+from rogw.promise import IPromise
+from rogw.worker import IWorker
 
 
 @dataclass
@@ -13,14 +15,27 @@ class ApiResponse:
     results: Dict[str, str]
 
 
-class Promise:
-    def __init__(self, key: str, text: str, resolver: Callable) -> None:
+class Promise(IPromise):
+    def __init__(self, key: str, worker: IWorker) -> None:
         self.key = key
-        self.text = text
-        self._resolver = resolver
+        self._worker = worker
+        self._result = ''
 
-    def resolve(self, result: str):
-        return self._resolver(result)
+    @property
+    def done(self) -> bool:
+        return len(self._result) > 0
+
+    @property
+    def text(self) -> str:
+        return self._worker.text
+
+    @property
+    def result(self) -> str:
+        return self._result
+
+    @result.setter
+    def result(self, value: str):
+        self._result = self._worker.run(value)
 
 
 class Translator:
@@ -30,16 +45,17 @@ class Translator:
         self._request_size_limit = request_size_limit
         self._promises: List[Promise] = []
 
-    def promise(self, text: str, resolver: Callable):
-        digest = self._calc_digest(text)
+    def enqueue(self, worker: IWorker) -> IPromise:
+        digest = self._calc_digest(worker.text)
         if self._cache.exists(digest):
-            resolver(self._cache.get(digest)['to'])
-            return
+            promise = Promise('', worker)
+            promise.result = self._cache.get(digest)['to']
+            return promise
 
-        index = len(self._promises)
-        key = f't{index}'
-        promise = Promise(key, text, resolver)
+        key = f't{len(self._promises)}'
+        promise = Promise(key, worker)
         self._promises.append(promise)
+        return promise
 
     def perform(self):
         start = 0
@@ -56,7 +72,7 @@ class Translator:
                 if promise.key in res.results:
                     digest = self._calc_digest(promise.text)
                     self._cache.set(digest, {'from': promise.text, 'to': res.results[promise.key]})
-                    promise.resolve(res.results[promise.key])
+                    promise.result = res.results[promise.key]
 
             start = end
 

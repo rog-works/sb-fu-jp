@@ -1,17 +1,17 @@
 from unittest import TestCase
-from rogw.mod import Mod
+from rogw.transworker import TransWorker
 
 
-class TestMod(TestCase):
-    def test_build_workers(self):
-        data = {
-            'aaaa': '^green;abcd^reset;',
-            'bbbb': '^green;+1 +2 +3',
-            'cccc': '^ green;abcd. abcd. abcd.^reset;',
-            'dddd': '^ green;abcd',
-            'eeee': '^green;abcd^reset;efgh^orange;ijkl^reset;',
-            'ffff': '^ orange;[abcd^reset;efgh^ orange;ijkl^reset;mnop]',
-        }
+class TestTransWorker(TestCase):
+    def test_run(self):
+        org_texts = [
+            '^green;abcd^reset;',
+            '^green;+1 +2 +3',
+            '^ green;abcd. abcd. abcd.^reset;',
+            '^ green;abcd',
+            '^green;abcd^reset;efgh^orange;ijkl^reset;',
+            '^ orange;[abcd^reset;efgh^ orange;ijkl^reset;mnop]',
+        ]
         prepare_expected = [
             '${0000}abcd${/}',
             '${0000}+1 +2 +3${/}',
@@ -20,7 +20,7 @@ class TestMod(TestCase):
             '${0000}abcd${/}efgh${0001}ijkl${/}',
             '${0000}[abcd${/}efgh${0001}ijkl${/}mnop]',
         ]
-        transes = [
+        trans_texts = [
             '${0000}あいう${/}',
             '${0000}+1 +2 +3${/}',
             '$ {0000} あいう. あいう. あいう.$ {/}',
@@ -36,9 +36,7 @@ class TestMod(TestCase):
             '^green; あいう  (org: abcd)^reset;えおか ^orange; きくけ  (org: ijkl)^reset;',
             '^orange;[あいう (org: [abcd)^reset;えおか^orange;きくけ (org: ijkl)^reset; こさし]',
         ]
-        keys = list(data.keys())
-        mod = Mod('filepath', data)
-        for index, worker in enumerate(mod.build_workers(keys).values()):
-            self.assertEqual(worker.prepare(), prepare_expected[index])
-            worker.post(transes[index])
-            self.assertEqual(worker.result, post_expected[index])
+        for index, org_text in enumerate(org_texts):
+            worker = TransWorker(org_text, org_text)
+            self.assertEqual(worker._pre_text, prepare_expected[index])
+            self.assertEqual(worker.run(trans_texts[index]), post_expected[index])

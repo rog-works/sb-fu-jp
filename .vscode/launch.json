@@ -46,14 +46,14 @@
 			]
 		},
 		{
-			"name": "Python: Test Mod File",
+			"name": "Python: Test TransWorker File",
 			"type": "python",
 			"request": "launch",
 			"module": "unittest",
 			"console": "integratedTerminal",
 			"cwd": "${workspaceFolder}",
 			"args": [
-				"tests/rogw/test_mod.py"
+				"tests/rogw/test_transworker.py"
 			]
 		},
 		{

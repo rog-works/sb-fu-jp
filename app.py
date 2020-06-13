@@ -8,6 +8,8 @@ from rogw.logger import logger
 from rogw.config import config
 from rogw.record import Record
 from rogw.target import Target
+from rogw.jsonquery import JsonQuery
+from rogw.transworker import TransWorker
 
 
 class App:
@@ -67,8 +69,9 @@ class App:
     def _run_prepare(self, filepath: str, json_paths: List[str], translator: Translator) -> Mod:
         mod = Mod.load(filepath)
         if not self._record.translated(mod.filepath, mod.digest):
-            for worker in mod.build_workers(json_paths).values():
-                translator.promise(worker.prepare(), worker.post)
+            for elem in JsonQuery(mod.data).equals(*json_paths):
+                worker = TransWorker(elem.value, f'{filepath} {elem.full_path}')
+                mod.promises[elem.full_path] = translator.enqueue(worker)
 
         return mod
 
