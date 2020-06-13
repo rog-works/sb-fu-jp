@@ -78,11 +78,10 @@ class Mod:
         return self._workers
 
     def build_workers(self, json_paths: List[str]) -> Dict[str, Worker]:
-        for json_path in json_paths:
-            if self._path_exists(self._data, json_path):
-                org_text, controls = self._parse_row(self._data, json_path)
-                context = self._context(json_path)
-                self._workers[json_path] = Worker(org_text, controls, context)
+        for elem in JsonQuery(self._data).equals(*json_paths):
+            org_text, controls = self._parse_row(self._data, elem.full_path)
+            context = self._context(elem.full_path)
+            self._workers[elem.full_path] = Worker(org_text, controls, context)
 
         return self._workers
 
@@ -111,9 +110,6 @@ class Mod:
             controls.append(Control(code, org_words))
 
         return controls
-
-    def _path_exists(self, data: dict, json_path: str) -> bool:
-        return len(JsonQuery(data).equals(json_path)) > 0
 
     def _pluck(self, data: dict, json_path: str) -> str:
         return JsonQuery(data).equals(json_path).first.value
