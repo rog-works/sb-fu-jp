@@ -1,13 +1,13 @@
 import sys
 from typing import List
-from args import Args
-from cache import Cache
-from translator import Translator
-from mod import Mod
-from logger import logger
-from config import config
-from record import Record
-from target import Target
+from rogw.args import Args
+from rogw.cache import Cache
+from rogw.translator import Translator
+from rogw.mod import Mod
+from rogw.logger import logger
+from rogw.config import config
+from rogw.record import Record
+from rogw.target import Target
 
 
 class App:

@@ -1,6 +1,6 @@
 import json
 from typing import List, Dict
-from discovery import Discovery
+from rogw.discovery import Discovery
 
 
 class Target:

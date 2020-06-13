@@ -1,5 +1,5 @@
 from unittest import TestCase
-from jsonquery import JsonQuery
+from rogw.jsonquery import JsonQuery
 
 
 class TestJsonQuery(TestCase):

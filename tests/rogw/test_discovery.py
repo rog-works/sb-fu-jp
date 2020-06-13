@@ -1,5 +1,5 @@
 from unittest import TestCase
-from discovery import Discovery
+from rogw.discovery import Discovery
 
 
 class TestDiscovery(TestCase):

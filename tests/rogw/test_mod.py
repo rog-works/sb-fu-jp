@@ -1,5 +1,5 @@
 from unittest import TestCase
-from mod import Mod
+from rogw.mod import Mod
 
 
 class TestMod(TestCase):

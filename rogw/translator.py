@@ -3,7 +3,7 @@ from typing import Callable, List, Dict
 from urllib import parse
 import hashlib
 import requests
-from cache import Cache
+from rogw.cache import Cache
 
 
 @dataclass

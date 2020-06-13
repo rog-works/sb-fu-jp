@@ -1,8 +1,8 @@
 import subprocess
 import re
 from typing import List, Dict
-from jsonquery import JsonQuery
-from storage import Storage
+from rogw.jsonquery import JsonQuery
+from rogw.storage import Storage
 
 
 class Discovery:

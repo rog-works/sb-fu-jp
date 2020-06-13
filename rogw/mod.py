@@ -4,9 +4,9 @@ import json
 from copy import deepcopy
 from typing import List, Dict, Tuple
 from dataclasses import dataclass
-from logger import logger
-from storage import Storage
-from jsonquery import JsonQuery
+from rogw.logger import logger
+from rogw.storage import Storage
+from rogw.jsonquery import JsonQuery
 
 
 @dataclass

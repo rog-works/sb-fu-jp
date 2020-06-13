@@ -1,13 +1,13 @@
 from unittest import TestCase, mock
-from args import Args
-from target import Target
+from rogw.args import Args
+from rogw.target import Target
 
 
 class TestApp(TestCase):
     CONFIG = {
         'GAS_URL': 'https://example.com/path',
         'REQUEST_SIZE_LIMIT': 5000,
-        'RECORD_FILEPATH': 'tests/record.csv',
+        'RECORD_FILEPATH': 'tests/save/record.csv',
         'DEST_DIR': 'dest/',
         'CACHE_DIR': 'tests/caches/',
     }
@@ -29,9 +29,9 @@ class TestApp(TestCase):
     ]
 
     def test_run(self):
-        with mock.patch.dict('config.config', self.CONFIG):
-            with mock.patch('translator.Translator._fetch', return_value=self.RES):
-                with mock.patch('storage.Storage.save') as save_mock:
+        with mock.patch.dict('rogw.config.config', self.CONFIG):
+            with mock.patch('rogw.translator.Translator._fetch', return_value=self.RES):
+                with mock.patch('rogw.storage.Storage.save') as save_mock:
                     from app import App
 
                     args = Args(self.ARGV)
