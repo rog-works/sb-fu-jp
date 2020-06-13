@@ -22,8 +22,8 @@ class JsonQueryElement:
         reg = re.compile(pattern)
         return self._find(lambda elem: reg.search(elem._path))
 
-    def equals(self, pattern: str) -> List['JsonQueryElement']:
-        return self._find(lambda elem: elem._path == pattern)
+    def equals(self, *patterns) -> List['JsonQueryElement']:
+        return self._find(lambda elem: elem._path in patterns)
 
     def startswith(self, pattern: str) -> List['JsonQueryElement']:
         return self._find(lambda elem: elem._path.startswith(pattern))
@@ -117,8 +117,8 @@ class JsonQuery:
     def search(self, pattern: str) -> 'JsonQuery':
         return self._invoke('search', pattern)
 
-    def equals(self, pattern: str) -> 'JsonQuery':
-        return self._invoke('equals', pattern)
+    def equals(self, *patterns) -> 'JsonQuery':
+        return self._invoke('equals', *patterns)
 
     def startswith(self, pattern: str) -> 'JsonQuery':
         return self._invoke('startswith', pattern)
