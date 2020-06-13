@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cwd=$(cd $(dirname $0); pwd)
+dir=$(cd $(dirname $0); pwd)
 
-cd ${cwd}/../
+cd ${dir}/../
 
 python app.py \
 --target quests \

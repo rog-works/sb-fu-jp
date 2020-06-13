@@ -112,28 +112,23 @@ class JsonQuery:
         self._elements: List[JsonQueryElement] = []
 
     def all(self) -> 'JsonQuery':
-        jq = JsonQuery(self._root_elem._node, delimiter=self._root_elem._delimiter)
-        jq._elements = list(flatten([element.all() for element in self._elements])) if self._elements else self._root_elem.all()
-        return jq
+        return self._invoke('all')
 
     def search(self, pattern: str) -> 'JsonQuery':
-        jq = JsonQuery(self._root_elem._node, delimiter=self._root_elem._delimiter)
-        jq._elements = list(flatten([element.search(pattern) for element in self._elements])) if self._elements else self._root_elem.search(pattern)
-        return jq
+        return self._invoke('search', pattern)
 
     def equals(self, pattern: str) -> 'JsonQuery':
-        jq = JsonQuery(self._root_elem._node, delimiter=self._root_elem._delimiter)
-        jq._elements = list(flatten([element.equals(pattern) for element in self._elements])) if self._elements else self._root_elem.equals(pattern)
-        return jq
+        return self._invoke('equals', pattern)
 
     def startswith(self, pattern: str) -> 'JsonQuery':
-        jq = JsonQuery(self._root_elem._node, delimiter=self._root_elem._delimiter)
-        jq._elements = list(flatten([element.startswith(pattern) for element in self._elements])) if self._elements else self._root_elem.startswith(pattern)
-        return jq
+        return self._invoke('startswith', pattern)
 
     def leaf(self) -> 'JsonQuery':
+        return self._invoke('leaf')
+
+    def _invoke(self, method: str, *args) -> 'JsonQuery':
         jq = JsonQuery(self._root_elem._node, delimiter=self._root_elem._delimiter)
-        jq._elements = list(flatten([element.leaf() for element in self._elements])) if self._elements else self._root_elem.leaf()
+        jq._elements = list(flatten([getattr(element, method)(*args) for element in self._elements])) if self._elements else getattr(self._root_elem, method)(*args)
         return jq
 
     @property
