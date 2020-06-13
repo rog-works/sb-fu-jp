@@ -1,0 +1,17 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: python:3.7-slim-buster
+
+    steps:
+      - checkout
+      - run:
+          name: pip install
+          command: pip install -r requirements.txt
+      - run:
+          name: setup
+          command: pip install -e .[dev]
+      - run:
+          name: run test
+          command: python -m unittest discover
