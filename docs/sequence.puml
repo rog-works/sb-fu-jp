@@ -1,0 +1,23 @@
+@startuml
+
+app -> targets: search mod by "mods_dir/"
+app <- targets: discovery mods
+loop mod in mods
+  app -> mod: load by "mod_path"
+  app <- mod
+  app -> mod: pluck by entry paths
+  app <- mod: pluck texts
+  loop text in texts
+    app <-> app: create worker by text
+    app -> translator: enqueue worker
+  end loop
+end loop
+
+app -> translator: perform translation
+app <- translator: finish translation
+
+loop mod in mods
+  app -> mod: flush translation
+end loop
+
+@enduml
