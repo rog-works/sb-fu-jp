@@ -13,7 +13,6 @@ from rogw.target import Target
 class App:
     def __init__(self, args: Args) -> None:
         self._args = args
-        self._translator = Translator(config['GAS_URL'], Cache(config['CACHE_DIR']), config['REQUEST_SIZE_LIMIT'])
         self._record = Record(config['RECORD_FILEPATH'])
         if self._args.force:
             self._record.clear()
@@ -37,16 +36,18 @@ class App:
     def _run_target(self, target: Target) -> bool:
         logger.info(f'Start {target.key} translation. counts = {len(target.targets)}')
 
+        translator = self._new_translator()
+
         mods: List[Mod] = []
         for filepath, json_paths in target.targets.items():
             try:
-                mods.append(self._run_prepare(filepath, json_paths))
+                mods.append(self._run_prepare(filepath, json_paths, translator))
             except Exception as e:
                 logger.error(f'Prepare procesing error! file = {filepath} error = {e}')
 
         continued = True
         try:
-            self._translator.perform()
+            translator.perform()
         except Exception as e:
             logger.error(f'Translation error. error = {e}')
             continued = False
@@ -60,11 +61,14 @@ class App:
         logger.info(f'Finish {target.key} tranlation.')
         return continued
 
-    def _run_prepare(self, filepath: str, json_paths: List[str]) -> Mod:
+    def _new_translator(self) -> Translator:
+        return Translator(config['GAS_URL'], Cache(config['CACHE_DIR']), config['REQUEST_SIZE_LIMIT'])
+
+    def _run_prepare(self, filepath: str, json_paths: List[str], translator: Translator) -> Mod:
         mod = Mod.load(filepath)
         if not self._record.translated(mod.filepath, mod.digest):
             for worker in mod.build_workers(json_paths).values():
-                self._translator.promise(worker.prepare(), worker.post)
+                translator.promise(worker.prepare(), worker.post)
 
         return mod
 
