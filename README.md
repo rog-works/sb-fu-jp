@@ -74,7 +74,7 @@ $ git clone git@github.com:rog-works/sb-fu-jp.git
 $ cd /path/to/workspace/sb-fu-jp
 
 # `GAS_URL`を変更
-$ vim config.py
+$ vim rogw/config.py
 
 config = {
     'GAS_URL': 'https://script.google.com/macros/s/xxxx/exec',  # 設定例
@@ -118,7 +118,7 @@ $ cp *.dll /path/to/workspace/sb-fu-jp/dest/
 $ cd /path/to/workspace/sb-fu-jp/
 
 # 翻訳実行
-$ bash trans.sh
+$ bash bin/trans.sh
 ```
 
 ## 7. 翻訳済みのMODデータ再パック
