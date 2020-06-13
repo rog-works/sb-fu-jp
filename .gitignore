@@ -2,6 +2,7 @@
 /dest/
 /docker/app/.ssh/authorized_keys
 /fu_assets/
+/htmlcov/
 /save/
 /sb_fu_jp.egg-info/
 /targets/tests/
