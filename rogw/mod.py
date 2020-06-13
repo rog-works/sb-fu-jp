@@ -79,7 +79,7 @@ class Mod:
 
     def build_workers(self, json_paths: List[str]) -> Dict[str, Worker]:
         for elem in JsonQuery(self._data).equals(*json_paths):
-            org_text, controls = self._parse_row(self._data, elem.full_path)
+            org_text, controls = self._parse_text(elem.value)
             context = self._context(elem.full_path)
             self._workers[elem.full_path] = Worker(org_text, controls, context)
 
@@ -87,8 +87,8 @@ class Mod:
 
     def translation(self) -> dict:
         result = deepcopy(self._data)
-        for json_path, worker in self._workers.items():
-            self._infuse(result, json_path, worker.result)
+        for elem in JsonQuery(result).equals(*self._workers.keys()):
+            elem.value = self._workers[elem.full_path].result
 
         return result
 
@@ -98,8 +98,7 @@ class Mod:
     def _context(self, json_path: str) -> str:
         return f'{self.filepath} {json_path}'
 
-    def _parse_row(self, data: dict, json_path: str) -> Tuple[str, List[Control]]:
-        org_text = self._pluck(data, json_path)
+    def _parse_text(self, org_text: str) -> Tuple[str, List[Control]]:
         return org_text, self._parse_controls(org_text)
 
     def _parse_controls(self, org_text: str) -> List[Control]:
@@ -110,9 +109,3 @@ class Mod:
             controls.append(Control(code, org_words))
 
         return controls
-
-    def _pluck(self, data: dict, json_path: str) -> str:
-        return JsonQuery(data).equals(json_path).first.value
-
-    def _infuse(self, data: dict, json_path: str, post_text: str):
-        JsonQuery(data).equals(json_path).first.value = post_text

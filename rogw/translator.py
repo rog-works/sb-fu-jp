@@ -87,4 +87,4 @@ class Translator:
             with requests.get(url, timeout=30, allow_redirects=True) as res:
                 return res.json()
         except Exception as e:
-            raise Exception('Translation error. error = {e}') from e
+            raise Exception(f'Failed request. error = {e}') from e
