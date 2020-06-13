@@ -26,16 +26,15 @@ class App:
         logger.info('Start tranlation.')
 
         for target_key in self._args.targets:
-            if self._args.discover:
-                self._run_target(Target.auto_discovery(target_key))
-            else:
-                self._run_target(Target.from_config(target_key))
+            target = Target.auto_discovery(target_key) if self._args.discover else Target.from_config(target_key)
+            if not self._run_target(target):
+                break
 
         self._finish()
 
         logger.info('Finish tranlation.')
 
-    def _run_target(self, target: Target):
+    def _run_target(self, target: Target) -> bool:
         logger.info(f'Start {target.key} translation. counts = {len(target.targets)}')
 
         mods: List[Mod] = []
@@ -45,10 +44,12 @@ class App:
             except Exception as e:
                 logger.error(f'Prepare procesing error! file = {filepath} error = {e}')
 
+        continued = True
         try:
             self._translator.perform()
         except Exception as e:
             logger.error(f'Translation error. error = {e}')
+            continued = False
 
         for mod in mods:
             try:
@@ -57,6 +58,7 @@ class App:
                 logger.error(f'Post procesing error! file = {mod.filepath} error = {e}')
 
         logger.info(f'Finish {target.key} tranlation.')
+        return continued
 
     def _run_prepare(self, filepath: str, json_paths: List[str]) -> Mod:
         mod = Mod.load(filepath)
