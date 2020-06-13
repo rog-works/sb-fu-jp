@@ -1,13 +1,15 @@
 import json
+import os
 from typing import List, Dict
+
 from rogw.discovery import Discovery
 
 
 class Target:
     @classmethod
     def from_config(cls, key: str) -> 'Target':
-        config = cls._load_config(f'targets/{key}/config.json')
-        files = cls._load_files(f'targets/{key}/files.txt')
+        config = cls._load_config(os.path.join('targets', key, 'config.json'))
+        files = cls._load_files(os.path.join('targets', key, 'files.txt'))
         return cls(key, {filepath: config['json_paths'] for filepath in files})
 
     @classmethod
@@ -22,7 +24,7 @@ class Target:
 
     @classmethod
     def auto_discovery(cls, key: str) -> 'Target':
-        discoveries = Discovery().search(f'fu_assets/{key}/', f'\\.({"|".join(cls.EXTENTIONS)})$')
+        discoveries = Discovery().search(os.path.join('fu_assets', key), f'\\.({"|".join(cls.EXTENTIONS)})$')
         return cls(key, discoveries)
 
     def __init__(self, key: str, targets: Dict[str, List[str]]) -> None:

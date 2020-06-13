@@ -79,10 +79,10 @@ class App:
 
     def _run_post(self, mod: Mod):
         if mod.can_translation:
-            mod.save(f'{config["DEST_DIR"]}/{mod.filepath}', mod.translation())
+            mod.save(os.path.join(config['DEST_DIR'], mod.filepath), mod.translation())
             self._record.translation(mod.filepath, mod.digest)
 
-            logger.info(f'Mod translation. {config["DEST_DIR"]}/{mod.filepath}')
+            logger.info(f'Mod translation. {os.path.join(config["DEST_DIR"], mod.filepath)}')
 
     def _finish(self):
         self._record.flush()

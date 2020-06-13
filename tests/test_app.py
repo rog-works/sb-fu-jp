@@ -44,7 +44,7 @@ class TestApp(TestCase):
                         for file_index, src_filepath in enumerate(target.targets.keys()):
                             call = save_mock.call_args_list[file_index][0]
                             actual_filepath, actual_data = call
-                            expected_filepath = f'{self.CONFIG["DEST_DIR"]}/{src_filepath}'
+                            expected_filepath = os.path.join(self.CONFIG['DEST_DIR'], src_filepath)
                             self.assertEqual(expected_filepath, actual_filepath)
                             for json_path in target.targets[src_filepath]:
                                 expected_text = self.RES['results'][f't{trans_index}']

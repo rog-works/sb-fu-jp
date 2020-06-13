@@ -20,7 +20,7 @@ class Cache:
             f.write(json.dumps(data, indent=2))
 
     def _to_filepath(self, key: str) -> str:
-        return f'{self._dir}/{key[:2]}/{key}.json'
+        return os.path.join(self._dir, key[:2], f'{key}.json')
 
     def _try_mkdir(self, filepath: str):
         dir = os.path.dirname(filepath)
