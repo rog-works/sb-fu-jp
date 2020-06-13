@@ -14,8 +14,15 @@ class Cache:
             return json.load(f)
 
     def set(self, key: str, data: dict):
-        with open(self._to_filepath(key), mode='w') as f:
+        filepath = self._to_filepath(key)
+        self._try_mkdir(filepath)
+        with open(filepath, mode='w') as f:
             f.write(json.dumps(data, indent=2))
 
     def _to_filepath(self, key: str) -> str:
-        return f'{self._dir}/{key}.json'
+        return f'{self._dir}/{key[:2]}/{key}.json'
+
+    def _try_mkdir(self, filepath: str):
+        dir = os.path.dirname(filepath)
+        if not os.path.exists(dir):
+            os.mkdir(dir)
