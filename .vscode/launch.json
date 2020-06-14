@@ -5,13 +5,6 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Python: Current File",
-			"type": "python",
-			"request": "launch",
-			"program": "${file}",
-			"console": "integratedTerminal",
-		},
-		{
 			"name": "Python: App File from config",
 			"type": "python",
 			"request": "launch",
@@ -40,35 +33,32 @@
 			"type": "python",
 			"request": "launch",
 			"module": "unittest",
-			"console": "integratedTerminal",
-			"args": [
-				"discover", "tests/"
-			]
+			"console": "integratedTerminal"
 		},
 		{
-			"name": "Python: Test App File",
+			"name": "Python: Test App",
 			"type": "python",
 			"request": "launch",
 			"module": "unittest",
 			"console": "integratedTerminal",
 			"cwd": "${workspaceFolder}",
 			"args": [
-				"tests/test_app.py"
+				"tests/rogw/test_app.py"
 			]
 		},
 		{
-			"name": "Python: Test TransWorker File",
+			"name": "Python: Test Discovery",
 			"type": "python",
 			"request": "launch",
 			"module": "unittest",
 			"console": "integratedTerminal",
 			"cwd": "${workspaceFolder}",
 			"args": [
-				"tests/rogw/test_transworker.py"
+				"tests/rogw/test_discovery.py"
 			]
 		},
 		{
-			"name": "Python: Test JsonQuery File",
+			"name": "Python: Test JsonQuery",
 			"type": "python",
 			"request": "launch",
 			"module": "unittest",
@@ -79,7 +69,7 @@
 			]
 		},
 		{
-			"name": "Python: Test ModJson File",
+			"name": "Python: Test ModJson",
 			"type": "python",
 			"request": "launch",
 			"module": "unittest",
@@ -87,6 +77,17 @@
 			"cwd": "${workspaceFolder}",
 			"args": [
 				"tests/rogw/test_modjson.py"
+			]
+		},
+		{
+			"name": "Python: Test TransWorker",
+			"type": "python",
+			"request": "launch",
+			"module": "unittest",
+			"console": "integratedTerminal",
+			"cwd": "${workspaceFolder}",
+			"args": [
+				"tests/rogw/test_transworker.py"
 			]
 		}
 	]

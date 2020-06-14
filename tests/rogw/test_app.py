@@ -11,6 +11,7 @@ class TestMain(TestCase):
         'RECORD_FILEPATH': 'tests/save/record.csv',
         'DEST_DIR': 'tests/dest/',
         'CACHE_DIR': 'tests/caches/',
+        'REPORT_FILEPATH': 'tests/logs/report.log',
     }
     RES = {
         'code': 200,
