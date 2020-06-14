@@ -1,6 +1,8 @@
 version: 2.1
 jobs:
-  build:
+    environment:
+      COVERALLS_REPO_TOKEN: ${COVERALLS_REPO_TOKEN}
+
     docker:
       - image: python:3.7-slim-buster
 
@@ -11,7 +13,9 @@ jobs:
           command: pip install -r requirements.txt
       - run:
           name: setup
-          command: pip install -e .[dev]
+          command: pip install -e .[test]
       - run:
-          name: run test
-          command: python -m unittest discover
+          name: run test and coverage
+          command: |
+            coverage run --source rogw/ python -m unittest discover
+            coveralls
