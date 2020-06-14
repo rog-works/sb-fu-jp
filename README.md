@@ -3,7 +3,7 @@ Star Bound Frackin' Universe日本語化ツール
 
 [![CircleCI](https://circleci.com/gh/rog-works/sb-fu-jp.svg?style=shield)](https://circleci.com/gh/rog-works/sb-fu-jp)
 [![Maintainability](https://api.codeclimate.com/v1/badges/1f26d55cf934dda318df/maintainability)](https://codeclimate.com/github/rog-works/sb-fu-jp/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/1f26d55cf934dda318df/test_coverage)](https://codeclimate.com/github/rog-works/sb-fu-jp/test_coverage)
+[![Coverage Status](https://coveralls.io/repos/github/rog-works/sb-fu-jp/badge.svg?branch=master)](https://coveralls.io/github/rog-works/sb-fu-jp?branch=master)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
 # 内容
