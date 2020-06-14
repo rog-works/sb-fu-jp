@@ -101,7 +101,7 @@ class Translator:
 
     def _fetch(self, url: str) -> dict:
         try:
-            with requests.get(url, timeout=30, allow_redirects=True) as res:
+            with requests.get(url, timeout=60, allow_redirects=True) as res:
                 if 200 <= res.status_code < 300 and res.headers['content-type'].find('application/json') != -1:
                     return res.json()
 
