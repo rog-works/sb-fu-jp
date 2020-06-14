@@ -4,4 +4,5 @@ config = {
     'RECORD_FILEPATH': 'save/record.csv',
     'DEST_DIR': 'dest/',
     'CACHE_DIR': 'caches/',
+    'REPORT_FILEPATH': 'logs/report.log',
 }

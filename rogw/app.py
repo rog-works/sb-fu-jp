@@ -46,20 +46,20 @@ class App:
             try:
                 mods.append(self._run_prepare(filepath, paths, translator))
             except Exception as e:
-                logger.error(f'Prepare procesing error! file = {filepath} error = {e}')
+                logger.error(f'Prepare procesing error! filepath = {filepath} error = [{type(e)}] {e}')
 
         continued = True
         try:
             translator.perform()
         except Exception as e:
-            logger.error(f'Translation error. error = {e}')
+            logger.error(f'Translation error. error = [{type(e)}] {e}')
             continued = False
 
         for mod in mods:
             try:
                 self._run_post(mod)
             except Exception as e:
-                logger.error(f'Post procesing error! file = {mod.filepath} error = {e}')
+                logger.error(f'Post procesing error! filepath = {mod.filepath} error = [{type(e)}] {e}')
 
         logger.info(f'Finish {target.key} tranlation.')
         return continued

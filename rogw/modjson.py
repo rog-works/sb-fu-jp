@@ -14,7 +14,7 @@ class ModJson:
                 content = self._cleanup(f.read())
                 return self._loader.loads(content)
         except Exception as e:
-            raise Exception(f'file = {filepath} error = [{type(e)}] {e}')
+            raise Exception(f'filepath = {filepath} error = [{type(e)}] {e}')
 
     def _cleanup(self, content: str) -> str:
         _clean = re.sub('(?<!:)//.*\n', '', content)
@@ -26,4 +26,4 @@ class ModJson:
             with open(filepath, mode='w', newline='\r\n') as f:
                 f.write(json.dumps(data, indent=2))
         except Exception as e:
-            raise Exception(f'file = {filepath} error = [{type(e)}] {e}')
+            raise Exception(f'filepath = {filepath} error = [{type(e)}] {e}')

@@ -107,4 +107,4 @@ class Translator:
 
                 raise Exception(f'Failed request. response = {res.text}')
         except Exception as e:
-            raise Exception(f'Fetch error. error = {e}') from e
+            raise Exception(f'Fetch error. error = [{type(e)}] {e}') from e
