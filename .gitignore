@@ -3,9 +3,11 @@
 /docker/app/.ssh/authorized_keys
 /fu_assets/
 /htmlcov/
+/logs/
 /save/
 /sb_fu_jp.egg-info/
 /targets/tests/
 /tests/caches/
+/tests/logs/
 /tests/save/
 /.coverage

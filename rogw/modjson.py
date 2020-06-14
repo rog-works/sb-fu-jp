@@ -17,7 +17,7 @@ class ModJson:
             raise Exception(f'filepath = {filepath} error = [{type(e)}] {e}')
 
     def _cleanup(self, content: str) -> str:
-        _clean = re.sub('(?<!:)//.*\n', '', content)
+        _clean = re.sub('(?<![:"])//.*\n', '', content)
         _clean = re.sub(r'/\*[^*]*\*/', '', _clean)
         return _clean
 
