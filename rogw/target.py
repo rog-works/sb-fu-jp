@@ -10,7 +10,7 @@ class Target:
     def from_config(cls, key: str) -> 'Target':
         config = cls._load_config(os.path.join('targets', key, 'config.json'))
         files = cls._load_files(os.path.join('targets', key, 'files.txt'))
-        return cls(key, {filepath: config['json_paths'] for filepath in files})
+        return cls(key, {filepath: config['paths'] for filepath in files})
 
     @classmethod
     def _load_config(cls, filepath: str) -> dict:

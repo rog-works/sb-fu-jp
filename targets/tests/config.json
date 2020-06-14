@@ -1,5 +1,5 @@
 {
-	"json_paths": [
+	"paths": [
 		"title",
 		"text"
 	]

@@ -46,7 +46,7 @@ class TestMain(TestCase):
                             actual_filepath, actual_data = call
                             expected_filepath = os.path.join(self.CONFIG['DEST_DIR'], src_filepath)
                             self.assertEqual(expected_filepath, actual_filepath)
-                            for json_path in target.targets[src_filepath]:
+                            for path in target.targets[src_filepath]:
                                 expected_text = self.RES['results'][f't{trans_index}']
-                                self.assertEqual(expected_text, actual_data[json_path])
+                                self.assertEqual(expected_text, actual_data[path])
                                 trans_index = trans_index + 1

@@ -42,9 +42,9 @@ class App:
         translator = self._new_translator()
 
         mods: List[Mod] = []
-        for filepath, json_paths in target.targets.items():
+        for filepath, paths in target.targets.items():
             try:
-                mods.append(self._run_prepare(filepath, json_paths, translator))
+                mods.append(self._run_prepare(filepath, paths, translator))
             except Exception as e:
                 logger.error(f'Prepare procesing error! file = {filepath} error = {e}')
 
@@ -67,10 +67,10 @@ class App:
     def _new_translator(self) -> Translator:
         return Translator(config['GAS_URL'], Cache(config['CACHE_DIR']), config['REQUEST_SIZE_LIMIT'])
 
-    def _run_prepare(self, filepath: str, json_paths: List[str], translator: Translator) -> Mod:
+    def _run_prepare(self, filepath: str, paths: List[str], translator: Translator) -> Mod:
         mod = Mod.load(filepath)
         if not self._record.translated(mod.filepath, mod.digest):
-            for elem in JsonQuery(mod.data).equals(*json_paths):
+            for elem in JsonQuery(mod.data, delimiter='/').equals(*paths):
                 worker = TransWorker(elem.value, f'{filepath} {elem.full_path}')
                 mod.promises[elem.full_path] = translator.enqueue(worker)
 

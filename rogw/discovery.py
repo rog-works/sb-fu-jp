@@ -13,9 +13,9 @@ class Discovery:
         discoveries: Dict[str, List[str]] = {}
         for filepath in self.search_files(dir, pattern):
             data = self._json.load(filepath)
-            discover_json_paths = self.discover(data)
-            if discover_json_paths:
-                discoveries[filepath] = discover_json_paths
+            discover_paths = self.discover(data)
+            if discover_paths:
+                discoveries[filepath] = discover_paths
 
         return discoveries
 
@@ -27,4 +27,4 @@ class Discovery:
             return [filepath for filepath in filepaths if reg.search(filepath)]
 
     def discover(self, data: dict) -> List[str]:
-        return [elem.full_path for elem in JsonQuery(data).leaf() if elem.text.find(' ') != -1]
+        return [elem.full_path for elem in JsonQuery(data, delimiter='/').leaf() if elem.text.find(' ') != -1]
