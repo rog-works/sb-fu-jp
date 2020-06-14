@@ -15,7 +15,7 @@
 			"name": "Python: App File from config",
 			"type": "python",
 			"request": "launch",
-			"program": "${workspaceFolder}/app.py",
+			"program": "${workspaceFolder}/main.py",
 			"console": "integratedTerminal",
 			"args": [
 				"--target", "tests"
@@ -25,7 +25,7 @@
 			"name": "Python: App File auto discovery",
 			"type": "python",
 			"request": "launch",
-			"program": "${workspaceFolder}/app.py",
+			"program": "${workspaceFolder}/main.py",
 			"console": "integratedTerminal",
 			"args": [
 				"--target", "dialog",

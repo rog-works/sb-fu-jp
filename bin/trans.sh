@@ -4,7 +4,7 @@ dir=$(cd $(dirname $0); pwd)
 
 cd ${dir}/../
 
-python app.py \
+python main.py \
 --target a_notyetadded \
 --target ai \
 --target animations \

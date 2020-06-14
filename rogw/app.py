@@ -1,5 +1,4 @@
 import os
-import sys
 from typing import List
 
 from rogw.args import Args
@@ -86,7 +85,3 @@ class App:
 
     def _finish(self):
         self._record.flush()
-
-
-if __name__ == '__main__':
-    App(Args(sys.argv)).run()

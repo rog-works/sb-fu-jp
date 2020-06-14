@@ -4,7 +4,7 @@ from rogw.args import Args
 from rogw.target import Target
 
 
-class TestApp(TestCase):
+class TestMain(TestCase):
     CONFIG = {
         'GAS_URL': 'https://example.com/path',
         'REQUEST_SIZE_LIMIT': 5000,
@@ -33,7 +33,7 @@ class TestApp(TestCase):
         with mock.patch.dict('rogw.config.config', self.CONFIG):
             with mock.patch('rogw.translator.Translator._fetch', return_value=self.RES):
                 with mock.patch('rogw.modjson.ModJson.save') as save_mock:
-                    from app import App
+                    from rogw.app import App
 
                     args = Args(self.ARGV)
                     App(args).run()
