@@ -102,6 +102,9 @@ class Translator:
     def _fetch(self, url: str) -> dict:
         try:
             with requests.get(url, timeout=30, allow_redirects=True) as res:
-                return res.json()
+                if 200 <= res.status_code < 300 and res.headers['content-type'].find('application/json') != -1:
+                    return res.json()
+
+                raise Exception(f'Failed request. response = {res.text}')
         except Exception as e:
-            raise Exception(f'Failed request. error = {e}') from e
+            raise Exception(f'Fetch error. error = {e}') from e
