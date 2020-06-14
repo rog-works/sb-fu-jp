@@ -13,9 +13,10 @@ jobs:
             apt-get install -y git
       - run:
           name: pip install
-          command: |
-            pip install -r requirements.txt
-            pip install -e .[test]
+          command: pip install -r requirements.txt
+      - run:
+          name: setup
+          command: pip install -e .[test]
       - run:
           name: run test and coverage report
           command: |
