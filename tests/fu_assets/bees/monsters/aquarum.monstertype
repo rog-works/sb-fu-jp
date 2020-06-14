@@ -1,0 +1,23 @@
+{
+	"type" : "xxxxxxxxxxx",
+	"shortdescription" : "xxxxxxxxx yyy",
+	"description" : "x yyyyyyy zzzz",
+		
+	/*
+	"touchDamage" : {
+		"damage" : 0,
+		"statusEffects" : [ ]
+	},
+	*/
+	"stats" : {
+		"maxHealth" : {
+			"baseValue" : 1
+		}/*,
+		"protection" : {
+			"baseValue" : 1.0
+		},
+		"healthRegen" : {
+			"baseValue" : 0
+		}*/
+	}
+}

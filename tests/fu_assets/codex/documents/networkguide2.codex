@@ -1,0 +1,15 @@
+{
+  "id" : "hoge",
+  "title" : "hoge fuga piyo",
+  "description" : "hoge fuga piyo",
+  "icon" : "hoge.png",
+  "contentPages" : [
+
+   "hoge fuga piyo URL: https://xxxxxxxxxxxxxx.yyy/zzzzzzzzzzz?id=1111111111"
+  
+  ],
+    "itemConfig" : {
+    "rarity" : "hoge",
+    "price" : 1
+  }
+}

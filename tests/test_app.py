@@ -9,7 +9,7 @@ class TestApp(TestCase):
         'GAS_URL': 'https://example.com/path',
         'REQUEST_SIZE_LIMIT': 5000,
         'RECORD_FILEPATH': 'tests/save/record.csv',
-        'DEST_DIR': 'dest/',
+        'DEST_DIR': 'tests/dest/',
         'CACHE_DIR': 'tests/caches/',
     }
     RES = {

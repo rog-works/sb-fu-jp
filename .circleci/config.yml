@@ -15,5 +15,5 @@ jobs:
       - run:
           name: run test and coverage
           command: |
-            coverage run --source rogw/ python -m unittest discover
+            coverage run --source rogw/ -m unittest discover
             coveralls
