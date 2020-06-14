@@ -26,7 +26,7 @@ class Mod:
 
     @property
     def can_translation(self) -> bool:
-        return len([promise for promise in self.promises.values() if promise.done]) == len(self.promises)
+        return 0 < len(self.promises) == len([promise for promise in self.promises.values() if promise.done])
 
     def translation(self) -> dict:
         result = deepcopy(self.data)
