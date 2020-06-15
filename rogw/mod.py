@@ -4,17 +4,10 @@ import json
 from typing import Dict
 
 from rogw.jsonquery import JsonQuery
-from rogw.modjson import ModJson
 from rogw.promise import IPromise
 
 
 class Mod:
-    _json = ModJson()
-
-    @classmethod
-    def load(cls, filepath: str) -> 'Mod':
-        return cls(filepath, cls._json.load(filepath))
-
     def __init__(self, filepath: str, data: dict) -> None:
         self.filepath = filepath
         self.data = data
@@ -34,6 +27,3 @@ class Mod:
             elem.value = self.promises[elem.full_path].result
 
         return result
-
-    def save(self, filepath: str, data: dict):
-        self._json.save(filepath, data)
