@@ -4,7 +4,7 @@ from typing import List, Dict
 
 from rogw.jsonquery import JsonQuery
 from rogw.modjson import ModJson
-from rogw.logger import logger, report
+from rogw.logger import report
 
 
 class Discovery:
@@ -31,7 +31,5 @@ class Discovery:
             data = self._json.load(filepath)
             return [elem.full_path for elem in JsonQuery(data).leaf() if elem.text.find(' ') != -1]
         except Exception as e:
-            error_message = f'Invalid json. filepath = {filepath} error = [{type(e)}] {e}'
-            logger.error(error_message)
-            report.error(error_message)
+            report.error(f'Invalid json. filepath = {filepath} error = [{type(e)}] {e}')
             return []

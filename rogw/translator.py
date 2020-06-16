@@ -5,7 +5,7 @@ from typing import List, Dict
 from urllib import parse
 
 from rogw.cache import Cache
-from rogw.logger import logger
+from rogw.logger import report
 from rogw.promise import IPromise
 from rogw.worker import IWorker
 
@@ -63,7 +63,7 @@ class Translator:
         while start < len(self._promises):
             end = self._collect_promises(start)
             if start == end:
-                logger.warning(f'Skip huge text translation. size = {len(self._promises[start].text)}')
+                report.warning(f'Skip huge text translation. size = {len(self._promises[start].text)}, text = {self._promises[start].text}')
                 start = start + 1
                 continue
 
@@ -105,6 +105,8 @@ class Translator:
                 if 200 <= res.status_code < 300 and res.headers['content-type'].find('application/json') != -1:
                     return res.json()
 
-                raise Exception(f'Failed request. response = {res.text}')
+                error_message = f'Failed request. response = {res.text}'
+                report.error(f'{error_message}, url = {url}')
+                raise Exception(error_message)
         except Exception as e:
             raise Exception(f'Fetch error. error = [{type(e)}] {e}') from e
