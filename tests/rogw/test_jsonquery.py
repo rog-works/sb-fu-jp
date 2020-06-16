@@ -35,6 +35,7 @@ class TestJsonQuery(TestCase):
                 'h'
             ],
         ],
+        'd.2': 8,
     }
 
     def test_search(self):
@@ -71,6 +72,11 @@ class TestJsonQuery(TestCase):
         self.assertEqual(int_elem.first.value, 6)
         self.assertEqual(int_elem.first.value, self.JSON['d'][2]['d-2-a'])
 
+    def test_all(self):
+        jq = JsonQuery(self.JSON)
+
+        self.assertEqual(len(jq.all()), 24)
+
     def test_equals(self):
         jq = JsonQuery(self.JSON)
 
@@ -79,11 +85,21 @@ class TestJsonQuery(TestCase):
         self.assertEqual(type(obj_elem.first.value), dict)
         self.assertEqual(obj_elem.first.value, self.JSON['d'][2])
 
+        obj_elem = jq.equals('d\\.2')
+        self.assertEqual(len(obj_elem), 1)
+        self.assertEqual(type(obj_elem.first.value), int)
+        self.assertEqual(obj_elem.first.value, self.JSON['d.2'])
+
     def test_startswith(self):
         jq = JsonQuery(self.JSON)
 
         elems = jq.startswith('d.2')
         self.assertEqual(len(elems), 3)
+
+    def test_leaf(self):
+        jq = JsonQuery(self.JSON)
+
+        self.assertEqual(len(jq.leaf()), 16)
 
     def test_setter(self):
         jq = JsonQuery(self.JSON)

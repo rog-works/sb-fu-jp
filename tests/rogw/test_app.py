@@ -1,7 +1,5 @@
 import os
 from unittest import TestCase, mock
-from rogw.args import Args
-from rogw.target import Target
 
 
 class TestMain(TestCase):
@@ -35,6 +33,8 @@ class TestMain(TestCase):
             with mock.patch('rogw.translator.Translator._fetch', return_value=self.RES):
                 with mock.patch('rogw.modjson.ModJson.save') as save_mock:
                     from rogw.app import App
+                    from rogw.args import Args
+                    from rogw.target import Target
 
                     args = Args(self.ARGV)
                     App(args).run()

@@ -29,7 +29,7 @@ class Discovery:
     def _discover(self, filepath: str) -> List[str]:
         try:
             data = self._json.load(filepath)
-            return [elem.full_path for elem in JsonQuery(data, delimiter='/').leaf() if elem.text.find(' ') != -1]
+            return [elem.full_path for elem in JsonQuery(data).leaf() if elem.text.find(' ') != -1]
         except Exception as e:
             error_message = f'Invalid json. filepath = {filepath} error = [{type(e)}] {e}'
             logger.error(error_message)

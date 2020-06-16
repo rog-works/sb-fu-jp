@@ -68,7 +68,8 @@ class JsonQueryElement:
 
         if type(node) is dict:
             for key in node.keys():
-                in_paths.extend(self._pathfy(node[key], f'{path}{self._delimiter}{key}' if path else key))
+                escaped_key = key.replace(self._delimiter, f'\\{self._delimiter}')
+                in_paths.extend(self._pathfy(node[key], f'{path}{self._delimiter}{escaped_key}' if path else escaped_key))
         elif type(node) is list:
             for index in range(len(node)):
                 in_paths.extend(self._pathfy(node[index], f'{path}{self._delimiter}{index}' if path else str(index)))
@@ -77,8 +78,9 @@ class JsonQueryElement:
 
     def _pluck(self, node: JsonNode, path: str) -> JsonNode:
         if type(node) is dict and path:
-            key, *remain = path.split(self._delimiter)
-            return self._pluck(node[key], self._delimiter.join(remain))
+            key, *remain = re.split(f'(?<!\\\\)\\{self._delimiter}', path)
+            plain_key = key.replace(f'\\{self._delimiter}', self._delimiter)
+            return self._pluck(node[plain_key], self._delimiter.join(remain))
         elif type(node) is list and path:
             key, *remain = path.split(self._delimiter)
             index = int(key)

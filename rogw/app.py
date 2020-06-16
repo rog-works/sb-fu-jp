@@ -63,7 +63,7 @@ class App:
         if self._record.translated(mod.filepath, mod.digest):
             return
 
-        for elem in JsonQuery(mod.data, delimiter='/').equals(*paths):
+        for elem in JsonQuery(mod.data).equals(*paths):
             worker = TransWorker(elem.value, f'{mod.filepath} {elem.full_path}')
             mod.promises[elem.full_path] = translator.enqueue(worker)
 

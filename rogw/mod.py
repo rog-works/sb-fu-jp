@@ -23,7 +23,7 @@ class Mod:
 
     def translation(self) -> dict:
         result = deepcopy(self.data)
-        for elem in JsonQuery(result, delimiter='/').equals(*self.promises.keys()):
+        for elem in JsonQuery(result).equals(*self.promises.keys()):
             elem.value = self.promises[elem.full_path].result
 
         return result
