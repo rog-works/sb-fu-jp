@@ -20,7 +20,7 @@ class TransWorker(IWorker):
         self._context = context
 
     def _parse_controls(self, org_text: str) -> List[Control]:
-        matches = re.finditer(r'\^\s*([a-z]+);([^\^]+)(\^reset;)?', org_text)
+        matches = re.finditer(r'\^\s*([a-z]+|#[0-9a-f]+);([^\^]+)(\^reset;)?', org_text)
         controls = []
         for match in matches:
             code, org_words = match.group(1, 2)
