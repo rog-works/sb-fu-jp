@@ -120,4 +120,4 @@ class Translator:
             return False, {}
 
         body = res.json()
-        return len(body['result']) > 0, body
+        return len(body['results']) > 0, body
