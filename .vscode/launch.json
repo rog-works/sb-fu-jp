@@ -21,6 +21,7 @@
 			"program": "${workspaceFolder}/main.py",
 			"console": "integratedTerminal",
 			"args": [
+				"--target", "objects",
 				"--target", "interface",
 				"--target", "dialog",
 				"--target", "quests",

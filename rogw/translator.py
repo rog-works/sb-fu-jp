@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import hashlib
 import requests
-from typing import List, Dict
+from typing import Dict, List, Tuple
 from urllib import parse
 
 from rogw.cache import Cache
@@ -102,11 +102,22 @@ class Translator:
     def _fetch(self, url: str) -> dict:
         try:
             with requests.get(url, timeout=60, allow_redirects=True) as res:
-                if 200 <= res.status_code < 300 and res.headers['content-type'].find('application/json') != -1:
-                    return res.json()
+                succeeded, body = self._parse_body(res)
+                if succeeded:
+                    return body
 
-                error_message = f'Failed request. response = {res.text}'
+                error_message = f'Failed request. status = {res.status_code}, response = {res.text}'
                 report.error(f'{error_message}, url = {url}')
                 raise Exception(error_message)
         except Exception as e:
             raise Exception(f'Fetch error. error = [{type(e)}] {e}') from e
+
+    def _parse_body(self, res: requests.Response) -> Tuple[bool, dict]:
+        if res.status_code < 200 or res.status_code >= 300:
+            return False, {}
+
+        if res.headers['content-type'].find('application/json') == -1:
+            return False, {}
+
+        body = res.json()
+        return len(body['result']) > 0, body
